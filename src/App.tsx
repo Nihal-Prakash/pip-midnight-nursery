@@ -25,12 +25,18 @@ function App() {
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [activeProject])
 
+  useEffect(() => {
+    if (!activeProject) return
+    const frame = requestAnimationFrame(() => {
+      const panel = document.getElementById('project-panel')
+      panel?.focus({ preventScroll: true })
+      panel?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 600px)').matches ? 'instant' : 'smooth', block: 'start' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [activeProject])
+
   function openProject(id: Project) {
     setActiveProject(id)
-    requestAnimationFrame(() => {
-      document.getElementById('project-panel')?.focus()
-      document.getElementById('project-panel')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center' })
-    })
   }
 
   function closeProject() {
