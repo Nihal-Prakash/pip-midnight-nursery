@@ -19,6 +19,7 @@ export function DreamDelivery({ muted, onPlaySound }: DreamDeliveryProps) {
   const [selected, setSelected] = useState<number | null>(null)
   const [run, setRun] = useState(0)
   const [delivered, setDelivered] = useState(false)
+  const [artReady, setArtReady] = useState(true)
 
   useEffect(() => {
     if (selected === null || !route.current || !star.current) return
@@ -64,7 +65,7 @@ export function DreamDelivery({ muted, onPlaySound }: DreamDeliveryProps) {
             <circle cx="106" cy="74" r="38" fill="#FFE5A0" />
             <g fill="#FFE5A0"><circle cx="320" cy="84" r="3"/><circle cx="530" cy="58" r="2"/><circle cx="819" cy="80" r="4"/><circle cx="795" cy="236" r="2"/></g>
           </g>
-          <image href="/assets/projects/dream-map.svg" width="900" height="500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" />
+          {artReady && <image href="/assets/projects/dream-map.svg" width="900" height="500" preserveAspectRatio="xMidYMid slice" aria-hidden="true" onError={() => setArtReady(false)} />}
           {destinations.map((house, index) => (
             <g key={house.name} transform={`translate(${house.x} ${house.y})`} className={selected === index ? 'dream-delivery__house--selected' : ''} aria-hidden="true">
               <path d="M-28 0 L0 -28 28 0 V30 H-28Z" fill="#FFF4E7" stroke="#81638E" strokeWidth="4" />

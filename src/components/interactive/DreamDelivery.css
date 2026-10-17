@@ -1,4 +1,8 @@
 .dream-delivery {
+  --pip-cream: var(--cream, #FFF4E7);
+  --pip-starlight: var(--starlight, #FFE5A0);
+  --pip-plum: var(--plum, #81638E);
+  --pip-midnight: var(--midnight, #25233F);
   box-sizing: border-box;
   width: 100%;
   max-width: 760px;

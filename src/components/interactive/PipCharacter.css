@@ -1,4 +1,10 @@
 .pip-character {
+  --pip-cream: var(--cream, #FFF4E7);
+  --pip-blush: var(--blush, #F5C9DC);
+  --pip-lavender: var(--lavender, #C9B6E7);
+  --pip-starlight: var(--starlight, #FFE5A0);
+  --pip-plum: var(--plum, #81638E);
+  --pip-midnight: var(--midnight, #25233F);
   display: inline-flex;
   flex-direction: column;
   align-items: center;
