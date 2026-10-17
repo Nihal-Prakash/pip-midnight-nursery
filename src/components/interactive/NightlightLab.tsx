@@ -11,7 +11,7 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
   const point = useRef({ x: 50, y: 50 })
   const frame = useRef(0)
   const hintId = useId()
-  const [lit, setLit] = useState(false)
+  const [view, setView] = useState<'off' | 'beam' | 'full'>('off')
 
   useEffect(() => () => cancelAnimationFrame(frame.current), [])
 
@@ -29,11 +29,11 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
     if (!scene.current) return
     const rect = scene.current.getBoundingClientRect()
     updateLight((event.clientX - rect.left) / rect.width * 100, (event.clientY - rect.top) / rect.height * 100)
-    setLit(true)
+    setView('beam')
   }
 
   function toggle() {
-    setLit(value => !value)
+    setView(value => value === 'off' ? 'beam' : 'off')
     if (!muted) onPlaySound?.()
   }
 
@@ -46,7 +46,7 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
       event.preventDefault()
       const [dx, dy] = delta[event.key]
       updateLight(point.current.x + dx, point.current.y + dy)
-      setLit(true)
+      setView('beam')
     } else if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault()
       toggle()
@@ -58,12 +58,12 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
       <p className="nightlight-lab__intro">A little light for the things that go bump in the night.</p>
       <div
         ref={scene}
-        className={`nightlight-lab__scene${lit ? ' nightlight-lab__scene--lit' : ''}`}
+        className={`nightlight-lab__scene nightlight-lab__scene--${view}`}
         role="button"
         tabIndex={0}
         aria-label="Explore the nursery with your nightlight"
         aria-describedby={hintId}
-        aria-pressed={lit}
+        aria-pressed={view !== 'off'}
         onPointerMove={move}
         onPointerDown={event => {
           if (event.pointerType === 'touch') event.currentTarget.setPointerCapture(event.pointerId)
@@ -75,10 +75,15 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
         <div className="nightlight-lab__beam" aria-hidden="true" />
         <span className="nightlight-lab__star" aria-hidden="true">✦</span>
       </div>
-      <button className="nightlight-lab__switch" type="button" aria-pressed={lit} onClick={toggle}>
-        {lit ? 'Turn off nightlight' : 'Turn on nightlight'}
-      </button>
-      <p className="nightlight-lab__hint" id={hintId}>Move or tap to reveal the nursery. Use arrow keys to move the light; Enter or Space to switch it on or off.</p>
+      <div className="nightlight-lab__controls">
+        <button className="nightlight-lab__switch" type="button" aria-pressed={view !== 'off'} onClick={toggle}>
+          {view === 'off' ? 'Turn on nightlight' : 'Turn off nightlight'}
+        </button>
+        <button className="nightlight-lab__reveal" type="button" aria-pressed={view === 'full'} onClick={() => setView(value => value === 'full' ? 'beam' : 'full')}>
+          {view === 'full' ? 'Return to lantern' : 'Reveal whole room'}
+        </button>
+      </div>
+      <p className="nightlight-lab__hint" id={hintId}>Move or tap to guide the lantern. Use arrow keys to move its light; Enter or Space to switch it on or off.</p>
     </section>
   )
 }

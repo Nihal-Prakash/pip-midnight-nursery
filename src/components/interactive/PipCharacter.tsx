@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import pipPortrait from '../../assets/pip-portrait.png'
 import './PipCharacter.css'
 
 export interface PipCharacterProps {
@@ -10,7 +11,7 @@ export function PipCharacter({ mood, interactive = true }: PipCharacterProps) {
   const figure = useRef<HTMLDivElement>(null)
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [reacting, setReacting] = useState(false)
-  const [imageReady, setImageReady] = useState(true)
+  const [imageSrc, setImageSrc] = useState<string | null>('/assets/character/pip-hero.webp')
 
   useEffect(() => () => clearTimeout(timer.current), [])
 
@@ -51,8 +52,8 @@ export function PipCharacter({ mood, interactive = true }: PipCharacterProps) {
     >
       <span ref={figure} className="pip-character__figure" style={{ '--pip-tilt-x': '0deg', '--pip-tilt-y': '0deg', '--pip-offset-x': '0px', '--pip-offset-y': '0px' } as CSSProperties}>
         <span className="pip-character__art">
-          {!imageReady && <span className="pip-character__placeholder" aria-hidden="true"><span className="pip-character__eyes" /></span>}
-          {imageReady && <img src="/assets/character/pip-hero.webp" alt="" draggable={false} onError={() => setImageReady(false)} />}
+          {!imageSrc && <span className="pip-character__placeholder" aria-hidden="true"><span className="pip-character__eyes" /></span>}
+          {imageSrc && <img src={imageSrc} className={imageSrc === pipPortrait ? 'pip-character__portrait' : undefined} alt="" draggable={false} onError={() => setImageSrc(imageSrc === '/assets/character/pip-hero.webp' ? pipPortrait : null)} />}
         </span>
         <span className="pip-character__spark pip-character__spark--one" aria-hidden="true">✦</span>
         <span className="pip-character__spark pip-character__spark--two" aria-hidden="true">✧</span>

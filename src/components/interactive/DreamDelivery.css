@@ -30,6 +30,7 @@
   cursor: pointer;
 }
 .dream-delivery__choices button[aria-pressed="true"] { background: var(--pip-starlight, #FFE5A0); }
+.dream-delivery__choices button:hover { background: var(--pip-starlight, #FFE5A0); }
 .dream-delivery__choices button:focus-visible { outline: 3px solid var(--pip-plum, #81638E); outline-offset: 2px; }
 .dream-delivery__status { min-height: 1.5em; margin: 12px 0 0; color: var(--pip-plum, #81638E); }
 @media (max-width: 500px) { .dream-delivery__choices button { flex: 1 1 42%; } }

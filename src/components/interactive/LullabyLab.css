@@ -79,6 +79,7 @@
 .lullaby-lab__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
 .lullaby-lab__controls button { min-height: 44px; min-width: 82px; border: 1px solid var(--pip-plum, #81638E); border-radius: 12px; background: var(--pip-starlight, #FFE5A0); color: var(--pip-midnight, #25233F); font: inherit; cursor: pointer; }
 .lullaby-lab__controls button:disabled { opacity: .55; cursor: default; }
+.lullaby-lab__controls button:not(:disabled):hover { background: var(--pip-blush, #F5C9DC); }
 .lullaby-lab__controls button:focus-visible { outline: 3px solid var(--pip-plum, #81638E); outline-offset: 2px; }
 .lullaby-lab__hint { margin: 12px 0 0; font-size: .82rem; color: var(--pip-plum, #81638E); }
 @keyframes lullaby-wind { to { transform: rotate(360deg); } }

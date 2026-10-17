@@ -27,7 +27,7 @@
   --light-y: 50%;
 }
 
-.nightlight-lab__scene:focus-visible, .nightlight-lab__switch:focus-visible {
+.nightlight-lab__scene:focus-visible, .nightlight-lab__controls button:focus-visible {
   outline: 3px solid var(--pip-starlight, #FFE5A0);
   outline-offset: 3px;
 }
@@ -43,8 +43,8 @@
 .nightlight-lab__room { filter: brightness(.22) saturate(.7); }
 .nightlight-lab__beam {
   opacity: 0;
-  mask-image: radial-gradient(circle clamp(125px, 22vw, 200px) at var(--light-x) var(--light-y), #000 25%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle clamp(125px, 22vw, 200px) at var(--light-x) var(--light-y), #000 25%, transparent 100%);
+  mask-image: radial-gradient(circle clamp(135px, 28vw, 230px) at var(--light-x) var(--light-y), #000 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle clamp(135px, 28vw, 230px) at var(--light-x) var(--light-y), #000 20%, transparent 100%);
   transition: opacity 220ms ease;
 }
 .nightlight-lab__beam::after {
@@ -53,7 +53,10 @@
   inset: 0;
   background: radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 229, 160, .26), transparent 32%);
 }
-.nightlight-lab__scene--lit .nightlight-lab__beam { opacity: 1; }
+.nightlight-lab__scene--beam .nightlight-lab__beam,
+.nightlight-lab__scene--full .nightlight-lab__beam { opacity: 1; }
+.nightlight-lab__scene--full .nightlight-lab__beam { mask-image: none; -webkit-mask-image: none; }
+.nightlight-lab__scene--full .nightlight-lab__beam::after { background: rgba(255, 229, 160, .1); }
 
 .nightlight-lab__star {
   position: absolute;
@@ -65,11 +68,11 @@
   pointer-events: none;
   text-shadow: 0 0 14px #FFE5A0;
 }
-.nightlight-lab__scene--lit .nightlight-lab__star { opacity: 1; }
+.nightlight-lab__scene--beam .nightlight-lab__star { opacity: 1; }
 
-.nightlight-lab__switch {
+.nightlight-lab__controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.nightlight-lab__controls button {
   min-height: 44px;
-  margin-top: 14px;
   padding: 8px 20px;
   border: 1px solid var(--pip-plum, #81638E);
   border-radius: 12px;
@@ -78,6 +81,8 @@
   font: inherit;
   cursor: pointer;
 }
+.nightlight-lab__reveal[aria-pressed="true"] { background: var(--pip-starlight, #FFE5A0); }
+.nightlight-lab__controls button:hover { background: var(--pip-starlight, #FFE5A0); }
 .nightlight-lab__hint { margin: 8px 0 0; font-size: .85rem; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -86,5 +91,5 @@
 
 @media (max-width: 500px) {
   .nightlight-lab__scene { min-height: 260px; }
-  .nightlight-lab__switch { width: 100%; }
+  .nightlight-lab__controls button { flex: 1 1 100%; }
 }
