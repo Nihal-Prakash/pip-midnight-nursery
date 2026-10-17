@@ -1,0 +1,37 @@
+.character {
+  position: relative;
+  display: block;
+  width: min(100%, 520px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--plum, #81638e);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.character:disabled { cursor: default; }
+.character:focus-visible { outline: 3px solid var(--plum, #81638e); outline-offset: 4px; border-radius: 25px; }
+.figure {
+  --pip-tilt: 0deg;
+  --pip-rise: 0px;
+  --pip-star-x: 0px;
+  display: block;
+  transform: translateY(var(--pip-rise)) rotate(var(--pip-tilt));
+  transform-origin: 50% 68%;
+  transition: transform 430ms var(--ease-dream, ease-out);
+  animation: breathe 5s ease-in-out infinite;
+  filter: drop-shadow(0 20px 24px #25233f26);
+}
+.portrait { display: block; width: 100%; height: auto; max-height: 590px; object-fit: contain; }
+.star { position: absolute; pointer-events: none; color: var(--starlight, #ffe5a0); text-shadow: 0 0 14px #ffe5a0; animation: twinkle 3.5s ease-in-out infinite alternate; }
+.starOne { top: 23%; left: 7%; font-size: 28px; transform: translateX(var(--pip-star-x, 0px)); transition: transform 550ms ease-out; }
+.starTwo { top: 9%; right: 13%; font-size: 21px; animation-delay: -1.3s; }
+.starThree { top: 69%; right: 7%; font-size: 42px; animation-delay: -2s; }
+.night .star { color: var(--starlight, #ffe5a0); }
+.waving .figure { animation: greet 650ms ease-in-out; }
+@keyframes breathe { 50% { translate: 0 -5px; } }
+@keyframes twinkle { 50% { opacity: .35; } }
+@keyframes greet { 40% { rotate: -3deg; } 75% { rotate: 3deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .figure, .star, .starOne { animation: none; transition: none; transform: none; }
+}
