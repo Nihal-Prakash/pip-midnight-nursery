@@ -1,0 +1,35 @@
+.dream-delivery {
+  --pip-cream: var(--cream, #FFF4E7);
+  --pip-starlight: var(--starlight, #FFE5A0);
+  --pip-plum: var(--plum, #81638E);
+  --pip-midnight: var(--midnight, #25233F);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 760px;
+  padding: 18px;
+  border: 1px solid var(--pip-plum, #81638E);
+  border-radius: 20px;
+  background: var(--pip-cream, #FFF4E7);
+  color: var(--pip-midnight, #25233F);
+  font: inherit;
+}
+.dream-delivery__intro { margin: 0 0 12px; }
+.dream-delivery__map { overflow: hidden; border: 2px solid var(--pip-plum, #81638E); border-radius: 14px; background: var(--pip-midnight, #25233F); }
+.dream-delivery__map svg { display: block; width: 100%; height: auto; }
+.dream-delivery__house--selected path:first-child { stroke: var(--pip-starlight, #FFE5A0); stroke-width: 8; }
+.dream-delivery__route { filter: drop-shadow(0 0 5px #FFE5A0); }
+.dream-delivery__choices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.dream-delivery__choices button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--pip-plum, #81638E);
+  border-radius: 12px;
+  background: var(--pip-cream, #FFF4E7);
+  color: var(--pip-midnight, #25233F);
+  font: inherit;
+  cursor: pointer;
+}
+.dream-delivery__choices button[aria-pressed="true"] { background: var(--pip-starlight, #FFE5A0); }
+.dream-delivery__choices button:focus-visible { outline: 3px solid var(--pip-plum, #81638E); outline-offset: 2px; }
+.dream-delivery__status { min-height: 1.5em; margin: 12px 0 0; color: var(--pip-plum, #81638E); }
+@media (max-width: 500px) { .dream-delivery__choices button { flex: 1 1 42%; } }

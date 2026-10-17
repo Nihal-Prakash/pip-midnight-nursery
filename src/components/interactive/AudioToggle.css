@@ -1,0 +1,3 @@
+.audio-toggle { --pip-cream: var(--cream, #FFF4E7); --pip-starlight: var(--starlight, #FFE5A0); --pip-plum: var(--plum, #81638E); --pip-midnight: var(--midnight, #25233F); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 14px; border: 1px solid var(--pip-plum, #81638E); border-radius: 12px; background: var(--pip-cream, #FFF4E7); color: var(--pip-midnight, #25233F); font: inherit; cursor: pointer; touch-action: manipulation; }
+.audio-toggle:focus-visible { outline: 3px solid var(--pip-starlight, #FFE5A0); outline-offset: 2px; }
+.audio-toggle svg { flex: none; }
