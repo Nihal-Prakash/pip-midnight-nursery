@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { projects } from '../../types'
 import type { Mood, Project } from '../../types'
 
@@ -37,7 +38,7 @@ export function DesktopDock({ activeProject, onOpenProject }: {
           aria-expanded={activeProject === id}
           onClick={() => onOpenProject(id)}
         >
-          <span className="dock-icon" aria-hidden="true">{id === 'lullaby' ? '♫' : id === 'nightlight' ? '✧' : '✉'}</span>
+          <span className={`dock-icon dock-icon--${id}`} aria-hidden="true">{id === 'lullaby' ? '♫' : id === 'nightlight' ? '✧' : '✉'}</span>
           <span>{title}</span>
           <span className="dock-caption" aria-hidden="true">open window ↗</span>
         </button>
@@ -52,17 +53,30 @@ export function ProjectWindow({ title, open, onClose, children }: {
   onClose: () => void
   children: ReactNode
 }) {
-  if (!open) return null
+  const reducedMotion = useReducedMotion()
   return (
-    <section className="window project-window" id="project-panel" aria-label={title} tabIndex={-1}>
-      <div className="window-bar">
-        <span className="window-lights" aria-hidden="true"><i /><i /><i /></span>
-        <span>{title}</span>
-        <span className="window-bar-end" aria-hidden="true">pip://workshop</span>
-        <button type="button" className="window-close" onClick={onClose} aria-label={`Close ${title}`}>×</button>
-      </div>
-      <div className="window-body">{children}</div>
-    </section>
+    <AnimatePresence initial={false}>
+      {open && (
+        <motion.section
+          className="window project-window"
+          id="project-panel"
+          aria-labelledby="project-window-title"
+          tabIndex={-1}
+          initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reducedMotion ? undefined : { opacity: 0, y: 8 }}
+          transition={{ duration: reducedMotion ? 0 : .24 }}
+        >
+          <div className="window-bar">
+            <span className="window-lights" aria-hidden="true"><i /><i /><i /></span>
+            <span id="project-window-title">{title}</span>
+            <span className="window-bar-end" aria-hidden="true">pip://workshop</span>
+            <button type="button" className="window-close" onClick={onClose} aria-label={`Close ${title}`}>×</button>
+          </div>
+          <div className="window-body">{children}</div>
+        </motion.section>
+      )}
+    </AnimatePresence>
   )
 }
 
