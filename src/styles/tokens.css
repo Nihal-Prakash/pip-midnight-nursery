@@ -1,0 +1,13 @@
+:root {
+  --cream: #fff4e7;
+  --blush: #f5c9dc;
+  --lavender: #c9b6e7;
+  --starlight: #ffe5a0;
+  --plum: #81638e;
+  --midnight: #25233f;
+  --ink: var(--midnight);
+  --surface: var(--cream);
+  --line: var(--plum);
+  --soft-shadow: 0 16px 42px #25233f18;
+  --font: system-ui, sans-serif;
+}
