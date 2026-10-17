@@ -1,6 +1,7 @@
 .nightlight-lab {
   width: 100%;
   max-width: 760px;
+  min-width: 0;
   color: var(--pip-midnight, #25233F);
   font: inherit;
 }
@@ -8,6 +9,7 @@
 .nightlight-lab__intro { margin: 0 0 12px; }
 .nightlight-lab__scene {
   position: relative;
+  box-sizing: border-box;
   overflow: hidden;
   width: 100%;
   aspect-ratio: 3 / 2;
@@ -17,6 +19,8 @@
   background: var(--pip-midnight, #25233F);
   cursor: crosshair;
   touch-action: none;
+  --light-x: 50%;
+  --light-y: 50%;
 }
 
 .nightlight-lab__scene:focus-visible, .nightlight-lab__switch:focus-visible {
@@ -27,17 +31,23 @@
 .nightlight-lab__room, .nightlight-lab__beam {
   position: absolute;
   inset: 0;
-  background-image: url('/assets/projects/nightlight-room.webp'), radial-gradient(ellipse at 50% 65%, #C9B6E7, #81638E 65%, #25233F);
+  background-image: url('/assets/projects/nightlight-room.webp'), url('./nightlight-fallback.svg');
   background-size: cover, cover;
   background-position: center, center;
 }
 
-.nightlight-lab__room { filter: brightness(.16) saturate(.65); }
+.nightlight-lab__room { filter: brightness(.22) saturate(.7); }
 .nightlight-lab__beam {
   opacity: 0;
-  mask-image: radial-gradient(circle 125px at var(--light-x) var(--light-y), #000 20%, transparent 100%);
-  -webkit-mask-image: radial-gradient(circle 125px at var(--light-x) var(--light-y), #000 20%, transparent 100%);
+  mask-image: radial-gradient(circle clamp(125px, 22vw, 200px) at var(--light-x) var(--light-y), #000 25%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle clamp(125px, 22vw, 200px) at var(--light-x) var(--light-y), #000 25%, transparent 100%);
   transition: opacity 220ms ease;
+}
+.nightlight-lab__beam::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 229, 160, .26), transparent 32%);
 }
 .nightlight-lab__scene--lit .nightlight-lab__beam { opacity: 1; }
 

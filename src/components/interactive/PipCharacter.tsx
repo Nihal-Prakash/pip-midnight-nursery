@@ -24,13 +24,19 @@ export function PipCharacter({ mood, interactive = true }: PipCharacterProps) {
   function tilt(event: PointerEvent<HTMLElement>) {
     if (!interactive || !figure.current) return
     const bounds = event.currentTarget.getBoundingClientRect()
-    figure.current.style.setProperty('--pip-tilt-x', `${((event.clientY - bounds.top) / bounds.height - 0.5) * -12}deg`)
-    figure.current.style.setProperty('--pip-tilt-y', `${((event.clientX - bounds.left) / bounds.width - 0.5) * 12}deg`)
+    const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1))
+    const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1))
+    figure.current.style.setProperty('--pip-tilt-x', `${-y * 5}deg`)
+    figure.current.style.setProperty('--pip-tilt-y', `${x * 5}deg`)
+    figure.current.style.setProperty('--pip-offset-x', `${x * 7}px`)
+    figure.current.style.setProperty('--pip-offset-y', `${y * 7}px`)
   }
 
   function resetTilt() {
     figure.current?.style.setProperty('--pip-tilt-x', '0deg')
     figure.current?.style.setProperty('--pip-tilt-y', '0deg')
+    figure.current?.style.setProperty('--pip-offset-x', '0px')
+    figure.current?.style.setProperty('--pip-offset-y', '0px')
   }
 
   const Element = interactive ? 'button' : 'div'
@@ -41,10 +47,15 @@ export function PipCharacter({ mood, interactive = true }: PipCharacterProps) {
       onPointerMove={tilt}
       onPointerLeave={resetTilt}
       onPointerUp={resetTilt}
+      onPointerCancel={resetTilt}
     >
-      <span ref={figure} className="pip-character__figure" style={{ '--pip-tilt-x': '0deg', '--pip-tilt-y': '0deg' } as CSSProperties}>
-        <span className="pip-character__placeholder" aria-hidden="true"><span className="pip-character__eyes" /></span>
-        {imageReady && <img src="/assets/character/pip-hero.webp" alt="" draggable={false} onError={() => setImageReady(false)} />}
+      <span ref={figure} className="pip-character__figure" style={{ '--pip-tilt-x': '0deg', '--pip-tilt-y': '0deg', '--pip-offset-x': '0px', '--pip-offset-y': '0px' } as CSSProperties}>
+        <span className="pip-character__art">
+          {!imageReady && <span className="pip-character__placeholder" aria-hidden="true"><span className="pip-character__eyes" /></span>}
+          {imageReady && <img src="/assets/character/pip-hero.webp" alt="" draggable={false} onError={() => setImageReady(false)} />}
+        </span>
+        <span className="pip-character__spark pip-character__spark--one" aria-hidden="true">✦</span>
+        <span className="pip-character__spark pip-character__spark--two" aria-hidden="true">✧</span>
       </span>
       {interactive && <span className="pip-character__hint" aria-hidden="true">Tap to say hi ✦</span>}
     </Element>

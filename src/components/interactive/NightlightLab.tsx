@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react'
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import './NightlightLab.css'
 
 export interface NightlightLabProps {
@@ -8,17 +8,28 @@ export interface NightlightLabProps {
 
 export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
   const scene = useRef<HTMLDivElement>(null)
+  const point = useRef({ x: 50, y: 50 })
+  const frame = useRef(0)
+  const hintId = useId()
   const [lit, setLit] = useState(false)
-  const [point, setPoint] = useState({ x: 50, y: 50 })
+
+  useEffect(() => () => cancelAnimationFrame(frame.current), [])
+
+  function updateLight(x: number, y: number) {
+    point.current = { x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) }
+    if (frame.current) return
+    frame.current = requestAnimationFrame(() => {
+      scene.current?.style.setProperty('--light-x', `${point.current.x}%`)
+      scene.current?.style.setProperty('--light-y', `${point.current.y}%`)
+      frame.current = 0
+    })
+  }
 
   function move(event: PointerEvent<HTMLDivElement>) {
     if (!scene.current) return
     const rect = scene.current.getBoundingClientRect()
-    setPoint({
-      x: Math.max(0, Math.min(100, (event.clientX - rect.left) / rect.width * 100)),
-      y: Math.max(0, Math.min(100, (event.clientY - rect.top) / rect.height * 100)),
-    })
-    if (event.pointerType !== 'mouse') setLit(true)
+    updateLight((event.clientX - rect.left) / rect.width * 100, (event.clientY - rect.top) / rect.height * 100)
+    setLit(true)
   }
 
   function toggle() {
@@ -34,7 +45,7 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
     if (event.key in delta) {
       event.preventDefault()
       const [dx, dy] = delta[event.key]
-      setPoint(({ x, y }) => ({ x: Math.max(0, Math.min(100, x + dx)), y: Math.max(0, Math.min(100, y + dy)) }))
+      updateLight(point.current.x + dx, point.current.y + dy)
       setLit(true)
     } else if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault()
@@ -50,12 +61,15 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
         className={`nightlight-lab__scene${lit ? ' nightlight-lab__scene--lit' : ''}`}
         role="button"
         tabIndex={0}
-        aria-label="Explore the nursery with your nightlight. Use arrow keys to move the light, Enter or Space to switch it on or off."
+        aria-label="Explore the nursery with your nightlight"
+        aria-describedby={hintId}
         aria-pressed={lit}
         onPointerMove={move}
-        onPointerDown={event => { move(event); if (event.pointerType === 'mouse') setLit(true) }}
+        onPointerDown={event => {
+          if (event.pointerType === 'touch') event.currentTarget.setPointerCapture(event.pointerId)
+          move(event)
+        }}
         onKeyDown={keyDown}
-        style={{ '--light-x': `${point.x}%`, '--light-y': `${point.y}%` } as CSSProperties}
       >
         <div className="nightlight-lab__room" aria-hidden="true" />
         <div className="nightlight-lab__beam" aria-hidden="true" />
@@ -64,7 +78,7 @@ export function NightlightLab({ muted, onPlaySound }: NightlightLabProps) {
       <button className="nightlight-lab__switch" type="button" aria-pressed={lit} onClick={toggle}>
         {lit ? 'Turn off nightlight' : 'Turn on nightlight'}
       </button>
-      <p className="nightlight-lab__hint">Click or tap in the room, then move to explore. On a keyboard, use the arrow keys.</p>
+      <p className="nightlight-lab__hint" id={hintId}>Move or tap to reveal the nursery. Use arrow keys to move the light; Enter or Space to switch it on or off.</p>
     </section>
   )
 }
