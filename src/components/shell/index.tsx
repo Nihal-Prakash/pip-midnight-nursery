@@ -14,7 +14,7 @@ export function DesktopShell({ mood, children }: ShellProps) {
           <a href="#workshop">Workshop</a>
           <a href="#goodnight">Goodnight</a>
         </nav>
-        <span className="menu-clock" aria-hidden="true">☾ Midnight Nursery</span>
+        <span className="menu-clock" aria-hidden="true"><span className="clock-light" /> ☾ Midnight Nursery</span>
       </header>
       <main>{children}</main>
     </div>
@@ -39,6 +39,7 @@ export function DesktopDock({ activeProject, onOpenProject }: {
         >
           <span className="dock-icon" aria-hidden="true">{id === 'lullaby' ? '♫' : id === 'nightlight' ? '✧' : '✉'}</span>
           <span>{title}</span>
+          <span className="dock-caption" aria-hidden="true">open window ↗</span>
         </button>
       ))}
     </nav>
@@ -57,6 +58,7 @@ export function ProjectWindow({ title, open, onClose, children }: {
       <div className="window-bar">
         <span className="window-lights" aria-hidden="true"><i /><i /><i /></span>
         <span>{title}</span>
+        <span className="window-bar-end" aria-hidden="true">pip://workshop</span>
         <button type="button" className="window-close" onClick={onClose} aria-label={`Close ${title}`}>×</button>
       </div>
       <div className="window-body">{children}</div>
