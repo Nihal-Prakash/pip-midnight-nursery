@@ -19,6 +19,7 @@ export function LullabyLab({ muted, onPlaySound }: LullabyLabProps) {
   const group = useId()
   const [selected, setSelected] = useState(0)
   const [playing, setPlaying] = useState(false)
+  const [pending, setPending] = useState(false)
   const [error, setError] = useState(false)
 
   useEffect(() => () => { request.current++ }, [])
@@ -26,14 +27,17 @@ export function LullabyLab({ muted, onPlaySound }: LullabyLabProps) {
   function halt() {
     request.current++
     stop()
+    setPending(false)
     setPlaying(false)
   }
 
   async function start(index: number) {
     const token = ++request.current
     setError(false)
+    setPending(true)
     const started = await playLoop(melodies[index].notes)
     if (token !== request.current) return
+    setPending(false)
     setPlaying(started)
     setError(!started)
     if (started && !muted) onPlaySound?.()
@@ -61,9 +65,9 @@ export function LullabyLab({ muted, onPlaySound }: LullabyLabProps) {
         ))}
       </fieldset>
       <div className="lullaby-lab__controls">
-        <button type="button" onClick={() => void start(selected)} disabled={playing}>Play</button>
-        <button type="button" onClick={halt} disabled={!playing}>Stop</button>
-        <span role="status">{error ? 'Audio is unavailable in this browser.' : playing ? muted ? 'Playing silently · unmute to hear' : 'Playing softly' : 'Ready to wind up'}</span>
+        <button type="button" onClick={() => void start(selected)} disabled={playing || pending}>Play</button>
+        <button type="button" onClick={halt} disabled={!playing && !pending}>Stop</button>
+        <span role="status">{error ? 'Audio is unavailable in this browser.' : pending ? 'Winding up…' : playing ? muted ? 'Playing silently · unmute to hear' : 'Playing softly' : 'Ready to wind up'}</span>
       </div>
       <p className="lullaby-lab__hint">{muted ? 'Sound is muted. Use the PipOS sound toggle to listen.' : 'Keep the PipOS sound toggle nearby to mute at any time.'}</p>
     </section>

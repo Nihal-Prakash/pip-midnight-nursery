@@ -79,7 +79,7 @@ export function DreamDelivery({ muted, onPlaySound }: DreamDeliveryProps) {
           </g>
           {selected !== null && <>
             <path ref={route} d={destinations[selected].path} className="dream-delivery__route" fill="none" stroke="#FFE5A0" strokeWidth="3" strokeDasharray="5 9" />
-            <g ref={star} transform="translate(448 386)" aria-hidden="true">
+            <g key={run} ref={star} transform="translate(448 386)" aria-hidden="true">
               <circle r="15" fill="#FFE5A0" opacity=".8" filter={`url(#${id}-glow)`} />
               <circle r="7" fill="#FFE5A0" />
             </g>

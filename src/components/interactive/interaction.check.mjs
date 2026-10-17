@@ -17,6 +17,7 @@ try {
   assert.doesNotMatch(pip, /<button/)
   assert.match(room, /aria-pressed="false"/)
   assert.match(room, /Turn on nightlight/)
+  assert.match(room, /Reveal whole room/)
   assert.equal((renderToStaticMarkup(createElement(LullabyLab, { muted: true })).match(/type="radio"/g) || []).length, 3)
   assert.equal((renderToStaticMarkup(createElement(DreamDelivery, { muted: true })).match(/aria-pressed="false"/g) || []).length, 3)
   assert.match(renderToStaticMarkup(createElement(MoonSecret, { onDiscover() {} })), /moon remembers three little wishes/)
