@@ -1,0 +1,46 @@
+[
+  {
+    "label": "desktop",
+    "viewport": "1440x900",
+    "overflow": 0,
+    "invalidImages": [],
+    "requests": [
+      "http://127.0.0.1:5173/assets/character/pip-hero.webp: HTTP 200, text/html",
+      "http://127.0.0.1:5173/assets/projects/dream-map.svg: HTTP 200, text/html"
+    ],
+    "errors": []
+  },
+  {
+    "label": "mobile",
+    "viewport": "390x844",
+    "overflow": 0,
+    "invalidImages": [],
+    "requests": [
+      "http://127.0.0.1:5173/assets/character/pip-hero.webp: HTTP 200, text/html",
+      "http://127.0.0.1:5173/assets/projects/dream-map.svg: HTTP 200, text/html"
+    ],
+    "errors": []
+  },
+  {
+    "label": "tablet",
+    "viewport": "768x1024",
+    "overflow": 0,
+    "invalidImages": [],
+    "requests": [
+      "http://127.0.0.1:5173/assets/character/pip-hero.webp: HTTP 200, text/html",
+      "http://127.0.0.1:5173/assets/projects/dream-map.svg: HTTP 200, text/html"
+    ],
+    "errors": []
+  },
+  {
+    "label": "narrow",
+    "viewport": "320x700",
+    "overflow": 0,
+    "invalidImages": [],
+    "requests": [
+      "http://127.0.0.1:5173/assets/character/pip-hero.webp: HTTP 200, text/html",
+      "http://127.0.0.1:5173/assets/projects/dream-map.svg: HTTP 200, text/html"
+    ],
+    "errors": []
+  }
+]

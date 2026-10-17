@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
-import pipPortrait from './assets/pip-portrait.png'
-import { assets } from './assets'
+import { AudioToggle } from './components/interactive/AudioToggle'
+import { DreamDelivery } from './components/interactive/DreamDelivery'
+import { LullabyLab } from './components/interactive/LullabyLab'
+import { MoonSecret } from './components/interactive/MoonSecret'
+import { NightlightLab } from './components/interactive/NightlightLab'
+import { PipCharacter } from './components/interactive/PipCharacter'
 import { DesktopDock, DesktopShell, Hero, ProjectWindow } from './components/shell'
 import { Goodnight, OriginStory } from './components/story'
 import { projects } from './types'
@@ -55,9 +59,8 @@ function App() {
           <a className="primary-link" href="#origin">Come see my story <span aria-hidden="true">↓</span></a>
           <span className="hero-scroll-note">01 / 04 · scroll to begin</span>
         </div>
-        <div className="hero-portrait" data-final-asset={assets.pipHero}>
-          {/* PipCharacter integration: replace this official portrait, not the surrounding composition. */}
-          <img src={pipPortrait} width="682" height="1024" alt="Pip, a smiling baby with a skull face and starry sleeping cap, holding a glowing lantern" />
+        <div className="hero-portrait">
+          <PipCharacter mood={mood} interactive />
         </div>
         <span className="hero-note" aria-hidden="true">✦ gently made after bedtime ✦</span>
       </Hero>
@@ -77,27 +80,22 @@ function App() {
           </div>
           <DesktopDock activeProject={activeProject} onOpenProject={openProject} />
           <ProjectWindow title={project?.title ?? ''} open={project !== undefined} onClose={closeProject}>
-            {/* LullabyLab / NightlightLab / DreamDelivery integration: swap only this preview. */}
-            <div className={`project-preview project-preview--${activeProject}`} data-final-asset={activeProject === 'lullaby' ? assets.musicbox : activeProject === 'nightlight' ? assets.nightlightRoom : assets.dreamMap}>
-              <span className="project-preview-art" aria-hidden="true">{activeProject === 'lullaby' ? '♫' : activeProject === 'nightlight' ? '✧' : '✉'}</span>
-              <div><span className="eyebrow">From Pip’s desk · {activeProject === 'lullaby' ? '01' : activeProject === 'nightlight' ? '02' : '03'}</span><h3>{project?.title}</h3><p>{project?.description}</p><p className="project-status">Pip is putting the finishing touches on this little wonder. ✦</p></div>
-            </div>
+            {activeProject === 'lullaby' && <LullabyLab muted={muted} />}
+            {activeProject === 'nightlight' && <NightlightLab muted={muted} />}
+            {activeProject === 'delivery' && <DreamDelivery muted={muted} />}
           </ProjectWindow>
         </div>
       </section>
 
       <Goodnight>
-        {/* MoonSecret integration: this discoverable in-flow note is the temporary stand-in. */}
-        <button className="moon-button" type="button" onClick={() => setSecretOpen(!secretOpen)} aria-expanded={secretOpen} aria-controls="secret-dream" aria-label="Look behind the moon">☾</button>
-        <span className="moon-hint">Psst… have you looked behind the moon?</span>
+        <MoonSecret onDiscover={() => setSecretOpen(true)} />
         <p id="secret-dream" className="secret-note" hidden={!secretOpen}>✦ Dear dreamer, the first star I ever fixed is yours to keep. If tonight feels dark, remember: even a tiny light can find its way home. — Pip</p>
-        <footer className="credits">Made for <a href="https://hax.baby/" target="_blank" rel="noreferrer">haX.baby</a> · Pip portrait: <a href="https://hax.baby/baby/assets/pip_portrait.png" target="_blank" rel="noreferrer">official haX.baby character art</a> · Interface built with React, Vite &amp; CSS · <a href="#welcome">Back to top ↑</a></footer>
+        <footer className="credits">Made for <a href="https://hax.baby/" target="_blank" rel="noreferrer">haX.baby</a> · Pip portrait: <a href="https://hax.baby/baby/assets/pip_portrait.png" target="_blank" rel="noreferrer">official haX.baby character art</a> · Interface built with React, Vite, Motion &amp; CSS · Sounds synthesized with Web Audio · <a href="#welcome">Back to top ↑</a></footer>
       </Goodnight>
 
       <div className="shell-controls" aria-label="PipOS settings">
-        {/* MoodSwitch / AudioToggle integration: App remains the owner of both states. */}
         <button className="mood-toggle" type="button" onClick={() => setMood(mood === 'day' ? 'night' : 'day')} aria-pressed={mood === 'night'} aria-label={mood === 'day' ? 'Dim the nursery' : 'Brighten the nursery'}>{mood === 'day' ? '☾ Dim lights' : '✦ Lights on'}</button>
-        <button className="sound-toggle" type="button" onClick={() => setMuted(!muted)} aria-pressed={!muted} aria-label={muted ? 'Enable sound' : 'Mute sound'} title="Sound will be available when the interactive projects arrive">{muted ? '♪ Sound off' : '♫ Sound on'}</button>
+        <AudioToggle muted={muted} onToggle={() => setMuted(value => !value)} />
       </div>
     </DesktopShell>
   )
