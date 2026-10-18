@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { projects } from '../../types'
 import type { Mood, Project } from '../../types'
 
@@ -55,7 +55,7 @@ export function ProjectWindow({ title, open, onClose, children }: {
 }) {
   const reducedMotion = useReducedMotion()
   return (
-    <AnimatePresence initial={false}>
+    <>
       {open && (
         <motion.section
           className="window project-window"
@@ -64,7 +64,6 @@ export function ProjectWindow({ title, open, onClose, children }: {
           tabIndex={-1}
           initial={reducedMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={reducedMotion ? undefined : { opacity: 0, y: 8 }}
           transition={{ duration: reducedMotion ? 0 : .24 }}
         >
           <div className="window-bar">
@@ -76,7 +75,7 @@ export function ProjectWindow({ title, open, onClose, children }: {
           <div className="window-body">{children}</div>
         </motion.section>
       )}
-    </AnimatePresence>
+    </>
   )
 }
 

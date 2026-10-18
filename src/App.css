@@ -89,7 +89,7 @@ p { line-height: 1.65; }
 .dock-button { width: 205px; min-height: 138px; padding: 17px 14px; display: grid; justify-items: center; align-content: center; gap: 7px; border: 1px solid var(--plum); border-radius: 18px; background: var(--cream); color: var(--midnight); box-shadow: 3px 4px 0 var(--plum); font-size: 13px; font-weight: 750; transition: transform .24s var(--ease-dream), background .24s var(--ease-dream); }
 .dock-button:hover, .dock-button:focus-visible, .dock-button--active { background: var(--blush); transform: translateY(-3px); }
 .dock-button--active { box-shadow: 0 0 0 2px var(--plum), 0 0 22px #ffe5a099; }
-.dock-button:focus-visible, .window-close:focus-visible, .primary-link:focus-visible, .moon-button:focus-visible, .shell-controls button:focus-visible { outline: 3px solid var(--plum); outline-offset: 4px; }
+.dock-button:focus-visible, .window-close:focus-visible, .primary-link:focus-visible, .shell-controls button:focus-visible { outline: 3px solid var(--plum); outline-offset: 4px; }
 .dock-icon { width: 55px; height: 55px; border-radius: 15px; display: grid; place-items: center; background: var(--lavender); color: var(--midnight); font-size: 30px; }
 .dock-icon--nightlight { background: var(--starlight); }
 .dock-icon--delivery { background: var(--blush); }
@@ -100,27 +100,17 @@ p { line-height: 1.65; }
 .project-window .window-bar { justify-content: space-between; }
 .project-window .window-bar > span:nth-child(2) { margin-right: auto; }
 .window-close { min-width: 38px; min-height: 38px; border: 1px solid var(--plum); border-radius: 8px; background: var(--cream); color: var(--midnight); font-size: 20px; line-height: 1; }
-.project-preview { min-height: 235px; display: grid; grid-template-columns: 180px 1fr; gap: 25px; align-items: center; }
-.project-preview-art { height: 170px; border: 1px solid var(--plum); border-radius: 25px; display: grid; place-items: center; background: radial-gradient(circle, var(--starlight), var(--lavender) 70%); box-shadow: inset 0 0 0 8px #fff4e755; font-size: 86px; color: var(--plum); }
-.project-preview--nightlight .project-preview-art { background: var(--starlight); }
-.project-preview--delivery .project-preview-art { background: var(--blush); }
-.project-preview .eyebrow { color: var(--plum); margin-bottom: 10px; }
-.project-preview h3 { font-size: 30px; margin-bottom: 10px; }
-.project-status { color: var(--plum); font-size: 12px; margin-top: 15px; }
 .goodnight-scene { position: relative; isolation: isolate; min-height: 780px; padding: 110px 20px 55px; text-align: center; color: var(--cream); background: radial-gradient(circle at 50% 49%, #81638e73, transparent 40%), var(--midnight); }
 .goodnight-scene::before { top: 17%; left: 27%; opacity: .6; }
 .goodnight-stars { margin-bottom: 90px; color: var(--starlight); letter-spacing: 1.3em; }
 .goodnight-scene .eyebrow { margin-bottom: 20px; color: var(--starlight); }
 .goodnight-scene > p { max-width: 510px; margin: 22px auto 0; }
-.moon-button { display: block; width: 128px; height: 128px; margin: 55px auto 10px; border: 1px solid var(--starlight); border-radius: 50%; color: var(--starlight); background: radial-gradient(circle at 40% 35%, #ffe5a04d, #ffe5a015 70%); font-size: 82px; line-height: 1; box-shadow: 0 0 45px #ffe5a044, 0 0 0 12px #ffe5a00b; transition: transform .5s var(--ease-dream); }
-.moon-button:hover { transform: rotate(-10deg); }
-.moon-hint { font-size: 12px; color: var(--lavender); }
 .secret-note { max-width: 440px; margin: 18px auto 0 !important; padding: 20px; border: 1px solid var(--lavender); border-radius: 15px; background: var(--midnight); box-shadow: 0 0 40px #ffe5a022; }
 .secret-note[hidden] { display: none; }
 .credits { margin: 92px auto 0; max-width: 820px; color: var(--lavender); font-size: 11px; line-height: 2; }
 .shell-controls { position: fixed; z-index: 5; bottom: 22px; right: 22px; display: flex; gap: 8px; }
-.sound-toggle, .mood-toggle { min-height: 46px; padding: 0 17px; border: 1px solid var(--plum); border-radius: 12px; color: var(--midnight); background: var(--cream); box-shadow: 3px 4px 0 var(--plum); font-size: 12px; font-weight: 750; }
-.sound-toggle:hover, .mood-toggle:hover { background: var(--blush); }
+.mood-toggle { min-height: 46px; padding: 0 17px; border: 1px solid var(--plum); border-radius: 12px; color: var(--midnight); background: var(--cream); box-shadow: 3px 4px 0 var(--plum); font-size: 12px; font-weight: 750; }
+.mood-toggle:hover { background: var(--blush); }
 @media (max-width: 800px) {
   .origin-story::before, .workshop-scene::before { display: none; }
   .menu-bar { height: 54px; padding: 0 18px; justify-content: space-between; }
@@ -157,16 +147,13 @@ p { line-height: 1.65; }
   .dock-caption { display: none; }
   .dock-icon { width: 31px; height: 31px; border-radius: 10px; font-size: 20px; }
   .shell-controls { bottom: 89px; right: 11px; }
-  .sound-toggle, .mood-toggle { min-height: 41px; padding: 0 11px; }
+  .mood-toggle { min-height: 41px; padding: 0 11px; }
   .workshop-intro .window-body { padding: 20px; }
   .project-window { margin-top: 30px; scroll-margin-top: 18px; }
   .project-window .window-body { padding: 18px; }
   .project-window .window-bar { gap: 8px; }
   .window-close { min-width: 44px; min-height: 44px; }
-  .project-preview { grid-template-columns: 1fr; gap: 17px; text-align: center; }
-  .project-preview-art { height: 125px; font-size: 62px; }
-  .project-preview h3 { font-size: 26px; }
-  .goodnight-stars { margin-bottom: 70px; }
+  .goodnight-stars { margin-bottom: 35px; }
   .credits { margin-top: 65px; }
 }
 @media (max-width: 360px) {
@@ -178,5 +165,71 @@ p { line-height: 1.65; }
   .project-window .window-body { padding: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .story-glow, .dock-button, .moon-button, .primary-link { transition: none; }
+  .story-glow, .dock-button, .primary-link { transition: none; }
+}
+
+/* Stage 3: the interactive scenes inherit the same porcelain window, rather than
+   drawing another framed card inside it. Local illustration stays until art arrives. */
+.hero-portrait .pip-character { position: relative; width: 100%; max-width: none; padding: 0; }
+.hero-portrait .pip-character__figure,
+.hero-portrait .pip-character__art { min-height: 0; }
+.hero-portrait .pip-character__figure img {
+  height: min(72svh, 660px);
+  max-height: 660px;
+  filter: drop-shadow(0 24px 24px #25233f26);
+}
+.hero-portrait .pip-character__placeholder {
+  width: 100%; height: min(72svh, 660px); border-radius: 0;
+  background: url('./assets/pip-portrait.png') center / contain no-repeat;
+  box-shadow: none;
+  mask-image: radial-gradient(ellipse 49% 53% at center, #000 55%, transparent 100%);
+}
+.hero-portrait .pip-character__placeholder::before,
+.hero-portrait .pip-character__eyes { display: none; }
+.hero-portrait .pip-character__hint { margin-top: -1.2rem; position: relative; z-index: 1; }
+.pip-os--night .hero-portrait .pip-character__placeholder { filter: drop-shadow(0 0 26px #ffe5a066); }
+.project-window { position: relative; z-index: 1; }
+.project-window .window-body { background: linear-gradient(155deg, #fff4e7, #f5c9dc40); }
+.project-window .lullaby-lab, .project-window .dream-delivery {
+  max-width: none; padding: 0; border: 0; border-radius: 0; background: transparent;
+}
+.project-window .lullaby-lab__stage {
+  background: radial-gradient(circle at 50% 32%, #ffe5a0, #c9b6e7 75%);
+}
+.project-window .nightlight-lab__room,
+.project-window .nightlight-lab__beam {
+  background-image: url('./components/interactive/nightlight-fallback.svg');
+  background-size: cover;
+}
+.project-window .dream-delivery__map image { display: none; }
+.goodnight-scene .moon-secret__dream { display: none; }
+.goodnight-bed {
+  position: relative; width: 190px; height: 170px; margin: 30px auto 8px;
+  border-radius: 50%; background: radial-gradient(circle, #ffe5a03b, transparent 73%);
+}
+.goodnight-bed img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  mask-image: radial-gradient(ellipse 44% 52% at 50% 48%, #000 48%, transparent 100%);
+  filter: saturate(.65) brightness(.82);
+  transform: rotate(-9deg);
+}
+.goodnight-bed span { position: absolute; top: 6px; right: -16px; color: var(--starlight); font: italic 18px var(--display-font); letter-spacing: .25em; }
+.goodnight-scene .moon-secret__moon { width: 110px; height: 110px; }
+.goodnight-scene .moon-secret__disc { width: 84px; height: 84px; }
+.secret-note { line-height: 1.7; }
+.audio-toggle { box-shadow: 3px 4px 0 var(--plum); font-size: 12px; font-weight: 750; }
+.audio-toggle:hover { background: var(--blush); }
+@media (max-width: 800px) {
+  .hero-portrait .pip-character__figure img,
+  .hero-portrait .pip-character__placeholder { height: min(41svh, 370px); }
+  .goodnight-bed { margin-top: 20px; }
+}
+@media (max-width: 600px) {
+  .workshop-scene { position: relative; z-index: 1; }
+  .project-window .window-body { padding: 16px; }
+  .shell-controls { left: 10px; right: auto; }
+  .shell-controls .audio-toggle span { display: none; }
+  .shell-controls .audio-toggle { min-width: 44px; padding: 8px 10px; }
+  .goodnight-scene { padding-top: 55px; padding-bottom: 180px; }
+  .goodnight-bed { height: 120px; width: 150px; margin-top: 12px; }
 }

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { assets } from '../../assets'
+import pipPortrait from '../../assets/pip-portrait.png'
 
 export function OriginStory() {
   const reducedMotion = useReducedMotion()
@@ -39,6 +40,7 @@ export function Goodnight({ children }: { children: ReactNode }) {
       <span className="eyebrow">04 / lights out</span>
       <h2 id="goodnight-title">Goodnight, little dreamer.</h2>
       <p>My eyes are getting sleepy. That’s all from my workshop tonight. I’ll leave a light on for you. <span aria-hidden="true">☾</span></p>
+      <div className="goodnight-bed" aria-hidden="true"><img src={pipPortrait} alt="" /><span>z z ✦</span></div>
       {children}
     </section>
   )
