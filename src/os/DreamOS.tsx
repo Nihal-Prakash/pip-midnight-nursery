@@ -117,9 +117,12 @@ export default function DreamOS() {
     setStartOpen(false)
   }
   function exitNursery() {
+    stopSounds()
     setNursery(null)
     if (nursery?.returnApp) dispatch({ type: 'focus', id: nursery.returnApp })
     requestAnimationFrame(() => {
+      // A finale may launch another app during exit; don't steal its focus back.
+      if (nursery?.returnApp && document.querySelector('.dx-window[data-focused="true"]')?.id !== `window-${nursery.returnApp}`) return
       if (returnControl.current?.isConnected) returnControl.current.focus({ preventScroll: true })
       else document.getElementById('launch-dreams')?.focus({ preventScroll: true })
     })
@@ -166,7 +169,7 @@ export default function DreamOS() {
       })
     } catch { notify('Sound is unavailable in this browser. Everything else still works.') }
   }
-  return <MotionConfig reducedMotion={reduced ? 'always' : 'user'}><div className="dream-os" data-effects={effects} data-reduced={reduced} data-quality={quality} onClickCapture={e => { if ((e.target as Element).closest('button')) void playNotes([660]) }}>
+  return <MotionConfig reducedMotion={reduced ? 'always' : 'user'}><div className="dream-os" data-effects={effects} data-reduced={reduced} data-quality={quality} onClickCapture={e => { if (!nursery && (e.target as Element).closest('button')) void playNotes([660]) }}>
     <AnimatePresence mode="wait">{boot ? <Boot key="boot" reducedPreference={reducedPreference} onEnter={enter} muted={muted} onToggleMute={() => setMuted(v => !v)} /> : <motion.main ref={desktop} key="desktop" className="dx-desktop" inert={!!nursery} aria-hidden={!!nursery} initial={{ opacity: 0, scale: reduced ? 1 : 1.025 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reduced ? 0 : .65 }} onPointerMove={e => {
       if (!ambient || mobile || e.pointerType === 'touch') return
       const x = (e.clientX / viewport.width - .5) * 7, y = (e.clientY / viewport.height - .5) * 7
@@ -194,7 +197,7 @@ export default function DreamOS() {
       }}><div className="dx-start-heading"><img src={art.sticker} alt="" /><span><strong>Pip’s little universe</strong><small>Junior Dream Engineer · online, barely</small></span></div><div className="dx-start-apps">{apps.filter(a => a.desktop).map(app => <button key={app.id} onClick={() => launch(app.id)}><img src={app.icon} alt="" /><span>{app.label}</span></button>)}</div><div className="dx-start-actions"><button onClick={() => launch('settings')}>⚙ Settings & credits</button><button onClick={home}>⌂ Return Home</button></div></motion.nav>}</AnimatePresence>
       <footer className="dx-taskbar" aria-label="System taskbar"><button className="dx-start-button" ref={startButton} aria-expanded={startOpen} aria-controls="dx-start-menu" onClick={() => setStartOpen(v => !v)}><img src={art.sticker} alt="" /><span>Start</span><span aria-hidden="true">⌃</span></button><span className="dx-taskbar-divider" /><div className="dx-running-apps" aria-label="Running applications">{windows.length ? windows.map(w => <button key={w.id} title={`${w.minimized ? 'Restore' : 'Show'} ${getApp(w.id).label}`} aria-label={`${w.minimized ? 'Restore' : 'Show'} ${getApp(w.id).label}`} aria-pressed={active === w.id} onClick={() => dispatch({ type: 'focus', id: w.id })}><img src={getApp(w.id).icon} alt="" /><span>{getApp(w.id).label}</span><i data-minimized={w.minimized} /></button>) : <span className="dx-idle-taskbar">☾ no rush. dreams take their time.</span>}</div><div className="dx-system-tray"><button className="dx-tray-home" onClick={home} aria-label="Return Home" title="Return Home">⌂</button><button onClick={() => setMuted(v => !v)} aria-label={muted ? 'Unmute sounds' : 'Mute sounds'} aria-pressed={!muted} title={muted ? 'Sound off' : 'Sound on'}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" />{muted ? <path d="m16 9 6 6m0-6-6 6" /> : <><path d="M15 8q5 4 0 8M18 4q9 8 0 16" /></>}</svg></button><button className="dx-tray-settings" onClick={() => launch('settings')} aria-label="Open Settings" title="Settings">⚙</button><time dateTime={clock.toISOString()}>{clock.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}<small>local time <span>✦</span></small></time></div></footer>
     </motion.main>}</AnimatePresence>
-    {nursery && <Nursery destination={nursery.destination} navigation={navigation} muted={muted} toggleMute={() => setMuted(v => !v)} />}
+    {nursery && <Nursery key={nursery.destination.kind === 'game' ? nursery.destination.game : 'nursery'} destination={nursery.destination} navigation={navigation} muted={muted} toggleMute={() => setMuted(v => !v)} progress={progress} updateProgress={updateProgress} playMelody={notes => { void playNotes(notes, true) }} stopSounds={stopSounds} reduced={reduced} />}
     <div className="dx-toast-region" role="status" aria-live="polite" aria-atomic="true"><AnimatePresence mode="wait">{toast && <motion.div className="dx-toast" key="notification" initial={{ opacity: 0, y: reduced ? 0 : 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}><span aria-hidden="true">✦</span><p>{toast.message}</p><button onClick={() => setToast(null)} aria-label="Dismiss notification">×</button></motion.div>}</AnimatePresence></div>
     <Cursor enabled={ambient} />
   </div></MotionConfig>

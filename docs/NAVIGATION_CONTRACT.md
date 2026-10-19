@@ -1,5 +1,16 @@
 # DREAM.EXE — navigation and state contract
 
+## Final Stage 3 / release extension
+
+The existing typed destinations now render real gameplay in `NurseryGames.tsx`.
+Repairs use the existing idempotent reducer: finish a three-phrase melody (silent
+play is allowed), discover all three stars, or finish a selected courier delivery.
+Stop/exit cancels pending playback and completion; navigation keeps the desktop
+mounted and restores the originating app. Three repairs unlock the nursery
+goodnight scene and sweetdreams.exe. No new assets, model renderer or dependencies.
+`npm run test:stage3:browser` verifies actual zero-to-three gameplay on desktop/touch,
+audio cleanup, return routing, finale and persistence; evidence is in `docs/evidence/dream-final/`.
+
 ## Stage 2 runtime contract (supersedes Stage 1 reserved destinations below)
 
 DreamOS remains the single coordinator; the twelve registry IDs and window
