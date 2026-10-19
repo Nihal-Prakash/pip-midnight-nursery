@@ -1,0 +1,265 @@
+{
+  "base": "http://127.0.0.1:4174",
+  "browser": "156.0.8078.4",
+  "rows": [
+    {
+      "control": "Stage 1 shell regression",
+      "expected": "Preserve drag, keyboard resize, maximize/restore, home and cursor",
+      "actual": "Real pointer drag and geometry restoration passed; eight-particle active cursor remains",
+      "back": "Home minimizes and restores without reconstruction",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "My Dreams invention links",
+      "expected": "Three distinct app destinations and real zero state",
+      "actual": "Each opened its own app; 0 repairs",
+      "back": "Closing restores My Dreams",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "About Pip",
+      "expected": "Canonical résumé, artwork, diary link",
+      "actual": "Character, origin, qualifications and diary destination present",
+      "back": "Diary closes back to résumé; résumé closes to desktop",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Dream Diary",
+      "expected": "Four pages, animated changes, previous/next boundaries and help link",
+      "actual": "Four unique titles, page counts, disabled end, note written, activity earned",
+      "back": "Help opens My Dreams; close returns to diary",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Lullaby Lab",
+      "expected": "Melody selection, audio preview, exact handoff",
+      "actual": "Raindrop notes created on single AudioContext; master mute zero; melody retained in station",
+      "back": "Return restores Lullaby selection/window",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Nightlight.exe",
+      "expected": "Light on/off and explicit Nightlight entry",
+      "actual": "Light state/visual changed; arrived at Nightlight star room, not Lullaby",
+      "back": "Escape restores original light preview",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Dream Courier: all three addresses",
+      "expected": "Pass selected address into courier station",
+      "actual": "Cloud Cottage, Moon House and Starry Nook arrived with exact destination IDs",
+      "back": "Each return retains selected address",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Telescope puzzle",
+      "expected": "Correct/incorrect feedback, five connected stars, clue, replay",
+      "actual": "Keyboard/tap completes; wrong star keeps thread; five stars awarded once; reopen complete",
+      "back": "Replay keeps earned progress; close returns desktop",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Toy Cabinet",
+      "expected": "Three unique inspectable toys, rotation and reactions",
+      "actual": "Three distinct image URLs/reactions; all rotated; activity earned",
+      "back": "Each selection stays inside cabinet; close returns desktop",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Dream Gallery: six records",
+      "expected": "Individual artwork/story/treatment, next/previous and grid back",
+      "actual": "Six distinct titles/images/tints; next then previous restores correct record",
+      "back": "All dreams restores grid; close returns desktop",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "DreamShell: all commands + history",
+      "expected": "Distinct output, real app launches/status, secret, clear, reboot",
+      "actual": "Every requested command exercised; history up/down; unknown and prototype names safe; starlight idempotent",
+      "back": "Launched apps/nursery restore terminal; reboot retains windows/transcript/progress",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "sweetdreams.exe locked + alternate secret",
+      "expected": "Three-dream clue; alternate Easter egg without bypassing repair lock",
+      "actual": "File locked at zero repairs; starlight note persisted; nursery route works",
+      "back": "Nursery returns to secret app; close returns desktop",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Lost Dreams",
+      "expected": "Recover three fragments independently; unique story and saved state",
+      "actual": "Three individual actions reveal stories; close/reopen remains recovered",
+      "back": "Close returns desktop",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "Persistence + Settings",
+      "expected": "Save earned activity/fragments/secret and preferences; confirmed reset",
+      "actual": "Reload kept all five activities and memories; cancel preserved; confirm reset progress only; preferences/note retained",
+      "back": "Settings and apps remain usable without reboot/navigation resets",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "All twelve window controls / layout",
+      "expected": "Minimize, restore, close; no horizontal overflow",
+      "actual": "Each app passed with native mouse or touch controls",
+      "back": "Desktop restored with retained central progress",
+      "mode": "desktop",
+      "status": "PASS"
+    },
+    {
+      "control": "My Dreams invention links",
+      "expected": "Three distinct app destinations and real zero state",
+      "actual": "Each opened its own app; 0 repairs",
+      "back": "Closing restores My Dreams",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "About Pip",
+      "expected": "Canonical résumé, artwork, diary link",
+      "actual": "Character, origin, qualifications and diary destination present",
+      "back": "Diary closes back to résumé; résumé closes to desktop",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Dream Diary",
+      "expected": "Four pages, animated changes, previous/next boundaries and help link",
+      "actual": "Four unique titles, page counts, disabled end, note written, activity earned",
+      "back": "Help opens My Dreams; close returns to diary",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Lullaby Lab",
+      "expected": "Melody selection, audio preview, exact handoff",
+      "actual": "Raindrop notes created on single AudioContext; master mute zero; melody retained in station",
+      "back": "Return restores Lullaby selection/window",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Nightlight.exe",
+      "expected": "Light on/off and explicit Nightlight entry",
+      "actual": "Light state/visual changed; arrived at Nightlight star room, not Lullaby",
+      "back": "Escape restores original light preview",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Dream Courier: all three addresses",
+      "expected": "Pass selected address into courier station",
+      "actual": "Cloud Cottage, Moon House and Starry Nook arrived with exact destination IDs",
+      "back": "Each return retains selected address",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Telescope puzzle",
+      "expected": "Correct/incorrect feedback, five connected stars, clue, replay",
+      "actual": "Keyboard/tap completes; wrong star keeps thread; five stars awarded once; reopen complete",
+      "back": "Replay keeps earned progress; close returns desktop",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Toy Cabinet",
+      "expected": "Three unique inspectable toys, rotation and reactions",
+      "actual": "Three distinct image URLs/reactions; all rotated; activity earned",
+      "back": "Each selection stays inside cabinet; close returns desktop",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Dream Gallery: six records",
+      "expected": "Individual artwork/story/treatment, next/previous and grid back",
+      "actual": "Six distinct titles/images/tints; next then previous restores correct record",
+      "back": "All dreams restores grid; close returns desktop",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "DreamShell: all commands + history",
+      "expected": "Distinct output, real app launches/status, secret, clear, reboot",
+      "actual": "Every requested command exercised; history up/down; unknown and prototype names safe; starlight idempotent",
+      "back": "Launched apps/nursery restore terminal; reboot retains windows/transcript/progress",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "sweetdreams.exe locked + alternate secret",
+      "expected": "Three-dream clue; alternate Easter egg without bypassing repair lock",
+      "actual": "File locked at zero repairs; starlight note persisted; nursery route works",
+      "back": "Nursery returns to secret app; close returns desktop",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Lost Dreams",
+      "expected": "Recover three fragments independently; unique story and saved state",
+      "actual": "Three individual actions reveal stories; close/reopen remains recovered",
+      "back": "Close returns desktop",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Persistence + Settings",
+      "expected": "Save earned activity/fragments/secret and preferences; confirmed reset",
+      "actual": "Reload kept all five activities and memories; cancel preserved; confirm reset progress only; preferences/note retained",
+      "back": "Settings and apps remain usable without reboot/navigation resets",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "All twelve window controls / layout",
+      "expected": "Minimize, restore, close; no horizontal overflow",
+      "actual": "Each app passed with native mouse or touch controls",
+      "back": "Desktop restored with retained central progress",
+      "mode": "touch-390",
+      "status": "PASS"
+    },
+    {
+      "control": "Future completion fixture",
+      "expected": "Unlock only after three unique repaired dreams",
+      "actual": "Loaded validated three-repair save; visual reward + dashboard 3/3 + persisted secret",
+      "back": "Close reward returns desktop",
+      "mode": "fixture / not Stage 3 gameplay",
+      "status": "PASS"
+    },
+    {
+      "control": "Corrupt storage",
+      "expected": "Clean fallback, usable recovery, OS reduced motion, 320px layout",
+      "actual": "Recovery works in memory; boot immediately ready; no overflow",
+      "back": "Window closes normally; no storage exception escapes",
+      "mode": "touch-320",
+      "status": "PASS"
+    },
+    {
+      "control": "Blocked/quota storage",
+      "expected": "Clean fallback, usable recovery, OS reduced motion, 320px layout",
+      "actual": "Recovery works in memory; boot immediately ready; no overflow",
+      "back": "Window closes normally; no storage exception escapes",
+      "mode": "touch-320",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "failure": null
+}

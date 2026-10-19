@@ -1,18 +1,37 @@
 import type { ComponentType } from 'react'
 import { icons } from '../assets/dream'
 import type { AppId, Destination } from '../state/windows'
+import type { Progress, ProgressAction } from '../state/progress'
+import type { DreamId } from './content'
 import { AboutPip, DreamDiary, DreamGallery, DreamCourier, LostDreams, LullabyLab, MyDreams, Nightlight, Settings, SweetDreams, Telescope, Terminal, ToyCabinet } from './views'
 
+export type Navigation = {
+  openApp: (id: AppId) => void
+  closeApp: (id: AppId) => void
+  focusWindow: (id: AppId) => void
+  enterNursery: (destination?: Destination) => void
+  exitNursery: () => void
+  openDreamDetail: (id: DreamId) => void
+  launchTerminalCommand: (command: string) => string
+  showNotification: (message: string) => void
+}
 export type AppProps = {
   data: string
   setData: (value: string) => void
-  launch: (id: AppId) => void
-  requestDestination: (destination: Destination) => void
-  notify: (message: string) => void
+  navigation: Navigation
+  progress: Progress
+  updateProgress: (action: ProgressAction) => void
   muted: boolean
   toggleMute: () => void
   effects: boolean
   toggleEffects: () => void
+  reduced: boolean
+  reducedPreference: boolean
+  toggleReduced: () => void
+  quality: 'full' | 'low'
+  setQuality: (value: 'full' | 'low') => void
+  playMelody: (notes: number[]) => void
+  resetProgress: () => void
   replayIntro: () => void
 }
 export type AppDefinition = {

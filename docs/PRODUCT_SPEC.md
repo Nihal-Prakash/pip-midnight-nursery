@@ -1,4 +1,53 @@
-# DREAM.EXE — Stage 1 product specification
+# DREAM.EXE — product specification
+
+## Stage 2 approved scope (supersedes the Stage 1 preview limitations below)
+
+The operator assigned Hermes A to `feat/stage2-apps`, based on the current master
+containing the approved Stage 1 foundation. Preserve boot, desktop composition,
+window chrome/manager and magical cursor. No merge, push, rebase or deployment.
+
+- My Dreams: live three-dream repair dashboard, earned stars, secrets, five mini
+  activities and recovered memories; invention links open their unique apps.
+- About Pip: canonical fictional résumé, supplied portrait, motivation,
+  qualifications, nursery work history and achievements.
+- Dream Diary: four illustrated entries, animated page changes, bounded page
+  navigation, help link and retained device-local visitor note.
+- Lullaby Lab: three melody choices, actual synthesized previews under master
+  mute, selected-melody handoff to the music station.
+- Nightlight.exe: working lamp preview, hidden-stars explanation and exact
+  Nightlight station handoff.
+- Dream Courier: three illustrated destination cards; selection is passed to
+  the delivery station and retained on return.
+- Telescope: five-star ordered puzzle, next-star hint, correct/incorrect
+  feedback, connected constellation, story/clue, replay and five earned stars.
+- Toy Cabinet: three unique supplied illustrations, native rotation controls,
+  unique toy reactions; no new 3D engine for the untextured/unanimated GLBs.
+- Dream Gallery: six individual artworks, stories and tonal treatments,
+  detail/grid navigation and circular next/previous navigation.
+- DreamShell: requested commands, bounded output/history, actual app launching,
+  live status, secret command, clear and non-destructive boot replay.
+- sweetdreams.exe: three-repair lock, clue before completion, message/artwork
+  reward afterward. The discoverable starlight command unlocks a separate note,
+  not an unearned repair. Three-repair browser coverage uses a labeled fixture.
+- Lost Dreams: three independently recoverable memories, retained after close
+  and reload; these are story fragments, not the three invention repairs.
+- Settings: sound, reduced animation, background effects, meaningful full/low
+  quality settings, confirmed progress reset, boot replay and credits.
+
+The nursery is a navigable Stage 2 station handoff, not Stage 3 gameplay. Entry
+selects the exact invention and melody/address; return/Escape restores the
+launcher window/control without rebuilding the desktop. No preview repairs a
+dream. Stage 3 must call the central progress reducer only on actual completion.
+
+Completed mini activities, repairs, memory fragments and secrets persist in
+versioned, allowlisted localStorage. Preferences persist separately. Reset only
+clears progress, not the note/preferences or unrelated storage. Fresh profiles
+have zero earned progress. Blocked storage retains usable in-memory behavior.
+
+Verification: `scripts/check-stage2.mjs`, `scripts/check-stage2-browser.mjs`,
+`docs/STAGE2_NAVIGATION_MATRIX.md` and `docs/evidence/dream-stage2/`.
+
+## Historical Stage 1 specification
 
 ## Authority and scope
 

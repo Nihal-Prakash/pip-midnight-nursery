@@ -9,6 +9,8 @@
     "lint": "oxlint",
     "typecheck": "tsc -b",
     "test:stage1": "node scripts/check-stage1.mjs",
+    "test:stage2": "node scripts/check-stage2.mjs",
+    "test:stage2:browser": "node scripts/check-stage2-browser.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

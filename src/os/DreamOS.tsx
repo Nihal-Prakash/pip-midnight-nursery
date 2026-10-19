@@ -1,18 +1,29 @@
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useEffectEvent, useReducer, useRef, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/react'
 import { apps, getApp } from '../apps/registry'
+import type { Navigation } from '../apps/registry'
+import { dreamRecords } from '../apps/content'
 import { art } from '../assets/dream'
 import { readPreference, savePreference, windowsReducer } from '../state/windows'
-import type { AppId, WindowAction } from '../state/windows'
+import type { AppId, Destination, WindowAction } from '../state/windows'
+import { loadProgress, progressReducer, saveProgress, starsCollected } from '../state/progress'
 import { AppWindow } from './AppWindow'
 import { Boot } from './Boot'
 import { Cursor } from './Cursor'
+import { Nursery } from './Nursery'
 import './dream.css'
+import '../apps/apps.css'
 
 export default function DreamOS() {
   const [boot, setBoot] = useState(() => !readPreference('visited', false))
   const [muted, setMuted] = useState<boolean>(() => readPreference('muted', true))
   const [effects, setEffects] = useState<boolean>(() => readPreference('effects', true))
+  const [reducedPreference, setReducedPreference] = useState<boolean>(() => readPreference('reduced', false))
+  const [quality, setQuality] = useState<'full' | 'low'>(() => readPreference<string>('quality', 'full') === 'low' ? 'low' : 'full')
+  const [progress, updateProgress] = useReducer(progressReducer, undefined, loadProgress)
+  const [progressEpoch, setProgressEpoch] = useState(0)
+  const [nursery, setNursery] = useState<{ destination: Destination; returnApp?: AppId } | null>(null)
+  const returnControl = useRef<HTMLElement | null>(null)
   const [windows, rawDispatch] = useReducer(windowsReducer, [])
   const [appData, setAppData] = useState<Partial<Record<AppId, string>>>(() => ({ diary: readPreference('diary', '') }))
   const [viewport, setViewport] = useState({ width: innerWidth, height: innerHeight })
@@ -25,7 +36,11 @@ export default function DreamOS() {
   const parallaxFrame = useRef(0)
   const audio = useRef<AudioContext | null>(null)
   const master = useRef<GainNode | null>(null)
-  const reduced = useReducedMotion()
+  const tones = useRef(new Set<OscillatorNode>())
+  const soundGeneration = useRef(0)
+  const deviceReduced = useReducedMotion()
+  const reduced = !!deviceReduced || reducedPreference
+  const ambient = effects && !reduced && quality === 'full'
   const active = windows.findLast(w => !w.minimized)?.id
   const mobile = viewport.width <= 700
 
@@ -37,6 +52,9 @@ export default function DreamOS() {
   }, [])
   useEffect(() => { savePreference('muted', muted); if (audio.current && master.current) master.current.gain.setValueAtTime(muted ? 0 : .035, audio.current.currentTime) }, [muted])
   useEffect(() => { savePreference('effects', effects) }, [effects])
+  useEffect(() => { savePreference('reduced', reducedPreference) }, [reducedPreference])
+  useEffect(() => { savePreference('quality', quality) }, [quality])
+  useEffect(() => { saveProgress(progress) }, [progress])
   useEffect(() => () => { void audio.current?.close(); audio.current = null; master.current = null }, [])
   useEffect(() => {
     if (!toast) return
@@ -52,22 +70,28 @@ export default function DreamOS() {
     document.addEventListener('pointerdown', outside)
     return () => document.removeEventListener('pointerdown', outside)
   }, [startOpen])
-  useEffect(() => {
-    function key(e: KeyboardEvent) {
+  const handleKey = useEffectEvent((e: KeyboardEvent) => {
       if (boot) return
+      if (nursery) {
+        if (e.key === 'Escape') { e.preventDefault(); exitNursery() }
+        return
+      }
       if (e.key === 'Escape' && startOpen) { e.preventDefault(); setStartOpen(false); startButton.current?.focus(); return }
-      if (e.key === 'Escape' && active) { e.preventDefault(); rawDispatch({ type: 'close', id: active }); requestAnimationFrame(() => { if (!document.querySelector('.dx-window:not([hidden])')) (document.getElementById(`launch-${active}`) ?? startButton.current)?.focus() }); return }
+      if (e.key === 'Escape' && active) { e.preventDefault(); dispatch({ type: 'close', id: active }); return }
       if (e.altKey && e.key === 'PageDown') {
         const visible = windows.filter(w => !w.minimized)
         if (visible.length) { e.preventDefault(); rawDispatch({ type: 'focus', id: visible[0].id }) }
       }
-    }
+  })
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => handleKey(e)
     document.addEventListener('keydown', key)
     return () => document.removeEventListener('keydown', key)
-  }, [active, boot, startOpen, windows])
+  }, [])
 
   function notify(message: string) { setToast({ id: Date.now(), message }) }
   function dispatch(action: WindowAction) {
+    if (action.type === 'close' || action.type === 'minimize' || action.type === 'home') stopSounds()
     rawDispatch(action)
     if (action.type === 'close' || action.type === 'minimize') requestAnimationFrame(() => {
       if (!document.querySelector('.dx-window:not([hidden])')) (document.getElementById(`launch-${action.id}`) ?? startButton.current)?.focus({ preventScroll: true })
@@ -80,26 +104,71 @@ export default function DreamOS() {
   }
   function enter() { savePreference('visited', true); setBoot(false) }
   function home() { dispatch({ type: 'home' }); setStartOpen(false); requestAnimationFrame(() => document.getElementById('launch-dreams')?.focus({ preventScroll: true })) }
-  async function chime() {
+  function stopSounds() {
+    soundGeneration.current++
+    tones.current.forEach(tone => { try { tone.stop() } catch { /* Already ended. */ } })
+    tones.current.clear()
+  }
+  function reboot() { stopSounds(); setStartOpen(false); setBoot(true) }
+  function enterNursery(destination: Destination = { kind: 'nursery' }) {
+    stopSounds()
+    if (!nursery) returnControl.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    setNursery(current => ({ destination, returnApp: current ? current.returnApp : active }))
+    setStartOpen(false)
+  }
+  function exitNursery() {
+    setNursery(null)
+    if (nursery?.returnApp) dispatch({ type: 'focus', id: nursery.returnApp })
+    requestAnimationFrame(() => {
+      if (returnControl.current?.isConnected) returnControl.current.focus({ preventScroll: true })
+      else document.getElementById('launch-dreams')?.focus({ preventScroll: true })
+    })
+  }
+  function launchTerminalCommand(command: string): string {
+    const input = command.trim().toLowerCase()
+    const commands: Partial<Record<string, AppId>> = { about: 'about', dreams: 'dreams', diary: 'diary', gallery: 'gallery', telescope: 'telescope', cabinet: 'cabinet', 'sweetdreams.exe': 'sweet' }
+    const target = Object.hasOwn(commands, input) ? commands[input] : undefined
+    if (target) { launch(target); return `Opening ${getApp(target).label}…` }
+    switch (input) {
+      case 'help': return 'help · pip · about · dreams · diary · gallery · telescope · cabinet · nursery · status · clear · sweetdreams.exe · reboot\nBonus: starlight. Use ↑ / ↓ for history. Escape closes the front app or returns from the nursery.'
+      case 'pip': case 'whoami': return 'Pip / baby skull / Junior Dream Engineer / Midnight Nursery\nCurious, kind, sleepy and imaginative. A lantern for every lonely star.'
+      case 'nursery': enterNursery(); return 'Entering the Midnight Nursery. Return to computer restores this terminal.'
+      case 'status': return `${progress.repaired.length}/3 dreams repaired · ${starsCollected(progress)} stars collected\n${progress.fragments.length}/3 memories recovered · ${progress.secrets.length} secrets discovered\nActivities: ${progress.activities.length}/5 (${progress.activities.join(', ') || 'none yet'})\nDreams: ${(['lullaby', 'nightlight', 'courier'] as const).map(id => `${id}=${progress.repaired.includes(id) ? 'repaired' : 'missing'}`).join(', ')}`
+      case 'starlight': updateProgress({ type: 'secret', id: 'starlight' }); notify('Secret found · A tiny star has been left in your terminal.'); return 'SECRET FOUND: Even the smallest light can lead someone home. — Pip\nA starlight note is now tucked inside sweetdreams.exe. The three-dream lock stays intact.'
+      case 'clear': return ''
+      case 'reboot': reboot(); return 'Replaying DREAM.EXE boot. Your windows and saved progress are safe.'
+      default: return `Unknown command “${command.trim().slice(0, 120)}”. Type help for available commands. Try gallery or diary to open an app. No system shell commands execute.`
+    }
+  }
+  const navigation: Navigation = {
+    openApp: launch, closeApp: id => dispatch({ type: 'close', id }), focusWindow: id => dispatch({ type: 'focus', id }),
+    enterNursery, exitNursery, launchTerminalCommand, showNotification: notify,
+    openDreamDetail: id => { if (!dreamRecords.some(d => d.id === id)) return; setAppData(current => ({ ...current, gallery: id })); launch('gallery') },
+  }
+  async function playNotes(notes: number[], replace = false) {
     if (muted || !window.AudioContext) return
+    if (replace) stopSounds()
+    const generation = soundGeneration.current
     try {
       if (!audio.current) { audio.current = new AudioContext(); master.current = audio.current.createGain(); master.current.gain.value = .035; master.current.connect(audio.current.destination) }
       const ctx = audio.current
       await ctx.resume()
-      if (!master.current || ctx.state !== 'running') return
-      const tone = ctx.createOscillator(), envelope = ctx.createGain()
-      tone.frequency.value = 660
-      envelope.gain.setValueAtTime(.001, ctx.currentTime)
-      envelope.gain.exponentialRampToValueAtTime(.6, ctx.currentTime + .015)
-      envelope.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .16)
-      tone.connect(envelope).connect(master.current)
-      tone.start(); tone.stop(ctx.currentTime + .18)
-      tone.onended = () => { tone.disconnect(); envelope.disconnect() }
+      if (!master.current || ctx.state !== 'running' || generation !== soundGeneration.current) return
+      notes.forEach((frequency, i) => {
+        const tone = ctx.createOscillator(), envelope = ctx.createGain(), start = ctx.currentTime + i * .24
+        tone.frequency.value = frequency
+        envelope.gain.setValueAtTime(.001, start)
+        envelope.gain.exponentialRampToValueAtTime(.6, start + .015)
+        envelope.gain.exponentialRampToValueAtTime(.001, start + .20)
+        tone.connect(envelope).connect(master.current!)
+        tones.current.add(tone); tone.start(start); tone.stop(start + .22)
+        tone.onended = () => { tones.current.delete(tone); tone.disconnect(); envelope.disconnect() }
+      })
     } catch { notify('Sound is unavailable in this browser. Everything else still works.') }
   }
-  return <MotionConfig reducedMotion="user"><div className="dream-os" data-effects={effects} onClickCapture={e => { if ((e.target as Element).closest('button')) void chime() }}>
-    <AnimatePresence mode="wait">{boot ? <Boot key="boot" onEnter={enter} muted={muted} onToggleMute={() => setMuted(v => !v)} /> : <motion.main ref={desktop} key="desktop" className="dx-desktop" initial={{ opacity: 0, scale: reduced ? 1 : 1.025 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reduced ? 0 : .65 }} onPointerMove={e => {
-      if (!effects || reduced || mobile || e.pointerType === 'touch') return
+  return <MotionConfig reducedMotion={reduced ? 'always' : 'user'}><div className="dream-os" data-effects={effects} data-reduced={reduced} data-quality={quality} onClickCapture={e => { if ((e.target as Element).closest('button')) void playNotes([660]) }}>
+    <AnimatePresence mode="wait">{boot ? <Boot key="boot" reducedPreference={reducedPreference} onEnter={enter} muted={muted} onToggleMute={() => setMuted(v => !v)} /> : <motion.main ref={desktop} key="desktop" className="dx-desktop" inert={!!nursery} aria-hidden={!!nursery} initial={{ opacity: 0, scale: reduced ? 1 : 1.025 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reduced ? 0 : .65 }} onPointerMove={e => {
+      if (!ambient || mobile || e.pointerType === 'touch') return
       const x = (e.clientX / viewport.width - .5) * 7, y = (e.clientY / viewport.height - .5) * 7
       cancelAnimationFrame(parallaxFrame.current)
       parallaxFrame.current = requestAnimationFrame(() => { desktop.current?.style.setProperty('--dx-px', `${x}px`); desktop.current?.style.setProperty('--dx-py', `${y}px`) })
@@ -116,7 +185,7 @@ export default function DreamOS() {
       </div>
       {windows.map((state, i) => {
         const app = getApp(state.id), Content = app.component
-        return <AppWindow key={state.id} app={app} state={state} focused={active === state.id} z={30 + i} viewport={viewport} dispatch={dispatch}><Content data={appData[state.id] ?? ''} setData={value => { setAppData(current => ({ ...current, [state.id]: value })); if (state.id === 'diary') savePreference('diary', value) }} launch={launch} requestDestination={destination => notify(destination.kind === 'nursery' ? 'The nursery portal is reserved for Stage 3. Your desktop is ready to explore.' : `${getApp(destination.game).label}: the repair game arrives in Stage 3. No dream has been marked repaired.`)} notify={notify} muted={muted} toggleMute={() => setMuted(m => !m)} effects={effects} toggleEffects={() => setEffects(v => !v)} replayIntro={() => { setStartOpen(false); setBoot(true) }} /></AppWindow>
+        return <AppWindow key={state.id} reducedPreference={reducedPreference} app={app} state={state} focused={active === state.id} z={30 + i} viewport={viewport} dispatch={dispatch}><Content key={progressEpoch} data={appData[state.id] ?? ''} setData={value => { setAppData(current => ({ ...current, [state.id]: value })); if (state.id === 'diary') savePreference('diary', value) }} navigation={navigation} progress={progress} updateProgress={updateProgress} muted={muted} toggleMute={() => setMuted(m => !m)} effects={effects} toggleEffects={() => setEffects(v => !v)} reduced={reduced} reducedPreference={reducedPreference} toggleReduced={() => setReducedPreference(v => !v)} quality={quality} setQuality={setQuality} playMelody={notes => { void playNotes(notes, true) }} resetProgress={() => { updateProgress({ type: 'reset' }); setProgressEpoch(v => v + 1); notify('Dream progress reset. Your diary note and preferences are safe.') }} replayIntro={reboot} /></AppWindow>
       })}
       <AnimatePresence>{startOpen && <motion.nav ref={menu} className="dx-start-menu" aria-label="Start menu" id="dx-start-menu" initial={{ opacity: 0, y: reduced ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} onKeyDown={e => {
         const buttons = [...e.currentTarget.querySelectorAll<HTMLButtonElement>('button')]
@@ -125,7 +194,8 @@ export default function DreamOS() {
       }}><div className="dx-start-heading"><img src={art.sticker} alt="" /><span><strong>Pip’s little universe</strong><small>Junior Dream Engineer · online, barely</small></span></div><div className="dx-start-apps">{apps.filter(a => a.desktop).map(app => <button key={app.id} onClick={() => launch(app.id)}><img src={app.icon} alt="" /><span>{app.label}</span></button>)}</div><div className="dx-start-actions"><button onClick={() => launch('settings')}>⚙ Settings & credits</button><button onClick={home}>⌂ Return Home</button></div></motion.nav>}</AnimatePresence>
       <footer className="dx-taskbar" aria-label="System taskbar"><button className="dx-start-button" ref={startButton} aria-expanded={startOpen} aria-controls="dx-start-menu" onClick={() => setStartOpen(v => !v)}><img src={art.sticker} alt="" /><span>Start</span><span aria-hidden="true">⌃</span></button><span className="dx-taskbar-divider" /><div className="dx-running-apps" aria-label="Running applications">{windows.length ? windows.map(w => <button key={w.id} title={`${w.minimized ? 'Restore' : 'Show'} ${getApp(w.id).label}`} aria-label={`${w.minimized ? 'Restore' : 'Show'} ${getApp(w.id).label}`} aria-pressed={active === w.id} onClick={() => dispatch({ type: 'focus', id: w.id })}><img src={getApp(w.id).icon} alt="" /><span>{getApp(w.id).label}</span><i data-minimized={w.minimized} /></button>) : <span className="dx-idle-taskbar">☾ no rush. dreams take their time.</span>}</div><div className="dx-system-tray"><button className="dx-tray-home" onClick={home} aria-label="Return Home" title="Return Home">⌂</button><button onClick={() => setMuted(v => !v)} aria-label={muted ? 'Unmute sounds' : 'Mute sounds'} aria-pressed={!muted} title={muted ? 'Sound off' : 'Sound on'}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" />{muted ? <path d="m16 9 6 6m0-6-6 6" /> : <><path d="M15 8q5 4 0 8M18 4q9 8 0 16" /></>}</svg></button><button className="dx-tray-settings" onClick={() => launch('settings')} aria-label="Open Settings" title="Settings">⚙</button><time dateTime={clock.toISOString()}>{clock.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}<small>local time <span>✦</span></small></time></div></footer>
     </motion.main>}</AnimatePresence>
+    {nursery && <Nursery destination={nursery.destination} navigation={navigation} muted={muted} toggleMute={() => setMuted(v => !v)} />}
     <div className="dx-toast-region" role="status" aria-live="polite" aria-atomic="true"><AnimatePresence mode="wait">{toast && <motion.div className="dx-toast" key="notification" initial={{ opacity: 0, y: reduced ? 0 : 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}><span aria-hidden="true">✦</span><p>{toast.message}</p><button onClick={() => setToast(null)} aria-label="Dismiss notification">×</button></motion.div>}</AnimatePresence></div>
-    <Cursor enabled={effects} />
+    <Cursor enabled={ambient} />
   </div></MotionConfig>
 }

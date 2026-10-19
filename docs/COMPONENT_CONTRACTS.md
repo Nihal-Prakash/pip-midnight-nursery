@@ -1,5 +1,14 @@
 # Shared component contracts
 
+## DREAM.EXE Stage 2 extension
+Operator assigned Hermes A to `feat/stage2-apps`. Stage 1 chrome/boot/desktop/cursor
+remain authoritative. AppProps now receives a centralized `navigation` API,
+validated `progress` plus idempotent progress actions, real preference controls,
+and the existing per-app session data. Exact destinations retain melody/delivery
+selection and launcher return identity. Stage 2 includes nursery station landings,
+not Stage 3 gameplay. See NAVIGATION_CONTRACT.md's Stage 2 section. No B-owned or
+asset-operator files are changed.
+
 ## DREAM.EXE Stage 1 replacement contract
 The operator explicitly authorized a from-scratch DREAM.EXE rebuild on `feat/stage3-visual`.
 The former scroll-journey contracts below are historical and remain valid only for the

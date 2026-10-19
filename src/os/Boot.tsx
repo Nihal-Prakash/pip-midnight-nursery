@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { art } from '../assets/dream'
 
-export function Boot({ onEnter, muted, onToggleMute }: { onEnter: () => void; muted: boolean; onToggleMute: () => void }) {
-  const reduced = useReducedMotion()
+export function Boot({ onEnter, muted, onToggleMute, reducedPreference = false }: { onEnter: () => void; muted: boolean; onToggleMute: () => void; reducedPreference?: boolean }) {
+  const deviceReduced = useReducedMotion()
+  const reduced = deviceReduced || reducedPreference
   const [progress, setProgress] = useState(0)
   useEffect(() => {
     if (reduced) return

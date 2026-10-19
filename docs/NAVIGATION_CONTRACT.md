@@ -1,5 +1,83 @@
 # DREAM.EXE — navigation and state contract
 
+## Stage 2 runtime contract (supersedes Stage 1 reserved destinations below)
+
+DreamOS remains the single coordinator; the twelve registry IDs and window
+reducer are unchanged. `src/apps/content.ts` contains the fixed story/catalog
+data, `src/apps/apps.css` styles only app interiors and preference effects, and
+`src/state/progress.ts` owns the versioned save/reducer. No legacy B-owned source
+or asset archive is imported as code or modified.
+
+AppProps receives `navigation: Navigation`:
+- `openApp(appId)`: create or restore/focus the one window for that app.
+- `closeApp(windowId)`: close only that window; retain central app data/progress.
+- `focusWindow(windowId)`: restore and focus through the existing reducer.
+- `enterNursery(destination?)`: open the nursery entrance by default, or one
+  exact typed station. Capture the source app/control on first entry.
+- `exitNursery()`: restore the source window/control; do not reset the OS.
+- `openDreamDetail(dreamId)`: validate against six catalog IDs, set the gallery
+  record and open/focus Gallery. All dreams returns to its grid.
+- `launchTerminalCommand(command)`: safe text parser returning output, launching
+  apps through the same coordinator. No eval, innerHTML, shell or location reset.
+- `showNotification(message)`: existing bounded, dismissible live toast.
+
+Destination is a discriminated union:
+```ts
+type Destination =
+  | { kind: 'nursery' }
+  | { kind: 'game'; game: 'lullaby'; melody: 'moon' | 'rain' | 'cloud' }
+  | { kind: 'game'; game: 'nightlight' }
+  | { kind: 'game'; game: 'courier'; destination: 'cloud' | 'moon' | 'starry' }
+```
+`Nursery.tsx` renders the selected landing. Melody/address cannot be omitted
+from their typed handoffs. Interior station navigation preserves the original
+return target. The desktop stays mounted and inert underneath; nursery heading
+receives focus; Escape returns before any window-close handling. Entry has no
+repair side effect. Stage 3 replaces the explicit station-preview boundary
+with gameplay; it must keep these destination and return semantics.
+
+DreamShell commands: help, pip (whoami alias), about, dreams, diary, gallery,
+telescope, cabinet, nursery, status, clear, sweetdreams.exe, reboot, starlight.
+Input trims/normalizes case; unknown/prototype-property names cannot index the
+registry. Up/down recalls up to 50 session commands and restores a draft. Output
+is capped at 8,000 characters. Reboot replays boot, retaining central windows,
+transcript, note, preferences and earned progress; component-local uncompleted
+activity attempts can restart. Closing Terminal clears its local command history
+but retains its transcript for this OS session.
+
+Progress schema at `dream-exe:progress`:
+```ts
+{ version: 1, repaired: ExperienceId[], fragments: FragmentId[],
+  activities: Activity[], secrets: ('starlight' | 'sweetdreams')[] }
+```
+Storage accepts only known, unique IDs. Unsupported versions, invalid JSON,
+wrong container types and denied storage safely fall back. Secrets include
+sweetdreams only when three unique repairs exist. Stars are derived (five for
+the telescope, one per repaired invention), never a separately drifting counter.
+`updateProgress` is the stable reducer dispatch: activity/recover/secret are
+idempotent. `repair` is reserved for verified Stage 3 completion; no Stage 2 UI
+dispatches it. All three recovered fragments complete the lost activity.
+
+Other keys: visited, muted, effects and diary retain Stage 1 semantics;
+`dream-exe:reduced` (boolean, false) and `dream-exe:quality` ('full' or 'low', full)
+extend preferences. Device reduced motion always wins. Low quality disables
+parallax, cursor trail, decorative twinkles, backdrop blur and heavy window/art
+shadows. Master gain mutes chimes and melody previews; one AudioContext, no
+autoplay. Close/minimize/home, nursery entry and reboot stop scheduled sounds.
+
+Confirmed progress reset replaces only the progress save and remounts app-local
+activity attempts so stale puzzle completion cannot re-award erased progress.
+Preferences and diary note stay; unrelated localStorage keys are untouched.
+App selections/transcript and partial activity visits remain session state.
+No account, backend, telemetry or unnecessary personal information is added.
+
+The Stage 2 browser harness uses production preview plus external Playwright,
+exercising all twelve apps with desktop and touch input. It writes actual-result
+matrix/report/screenshots; the three-repair save is explicitly a future-state
+fixture, not evidence of Stage 3 completion gameplay.
+
+## Historical Stage 1 contract
+
 ## Entry and ownership
 
 `index.html` → `src/main.tsx` → `src/os/DreamOS.tsx`.

@@ -1,5 +1,8 @@
 export type AppId = 'dreams' | 'about' | 'diary' | 'lullaby' | 'nightlight' | 'courier' | 'telescope' | 'cabinet' | 'gallery' | 'terminal' | 'sweet' | 'lost' | 'settings'
-export type Destination = { kind: 'nursery' } | { kind: 'game'; game: 'lullaby' | 'nightlight' | 'courier' }
+export type ExperienceId = 'lullaby' | 'nightlight' | 'courier'
+export type DeliveryId = 'cloud' | 'moon' | 'starry'
+export type MelodyId = 'moon' | 'rain' | 'cloud'
+export type Destination = { kind: 'nursery' } | { kind: 'game'; game: 'lullaby'; melody: MelodyId } | { kind: 'game'; game: 'nightlight' } | { kind: 'game'; game: 'courier'; destination: DeliveryId }
 export type Bounds = { width: number; height: number }
 export type WindowState = { id: AppId; x: number; y: number; width: number; height: number; minimized: boolean; maximized: boolean }
 export type WindowAction =

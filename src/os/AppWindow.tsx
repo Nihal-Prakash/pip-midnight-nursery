@@ -4,12 +4,13 @@ import { motion, useReducedMotion } from 'motion/react'
 import type { AppDefinition } from '../apps/registry'
 import type { Bounds, WindowAction, WindowState } from '../state/windows'
 
-export function AppWindow({ app, state, focused, z, viewport, dispatch, children }: { app: AppDefinition; state: WindowState; focused: boolean; z: number; viewport: Bounds; dispatch: Dispatch<WindowAction>; children: ReactNode }) {
+export function AppWindow({ app, state, focused, z, viewport, dispatch, children, reducedPreference = false }: { app: AppDefinition; state: WindowState; focused: boolean; z: number; viewport: Bounds; dispatch: Dispatch<WindowAction>; children: ReactNode; reducedPreference?: boolean }) {
   const panel = useRef<HTMLElement>(null)
   const title = useRef<HTMLDivElement>(null)
   const drag = useRef<{ x: number; y: number; original: WindowState; mode: 'move' | 'resize' } | null>(null)
   const pending = useRef(0)
-  const reduced = useReducedMotion()
+  const deviceReduced = useReducedMotion()
+  const reduced = deviceReduced || reducedPreference
   const mobile = viewport.width <= 700
   const hidden = state.minimized || (mobile && !focused)
   useEffect(() => {
