@@ -1,0 +1,32 @@
+{
+  "browser": "156.0.8078.4",
+  "base": "http://127.0.0.1:4173",
+  "checks": [
+    "Timed boot, progress, error, entry transition and 12 supplied desktop icons",
+    "Fine-pointer normal/active/secret modes, bounded eight-particle RAF trail and native pointer fallback",
+    "All 12 icons open distinct content and close independently",
+    "Double-click deduplication, independent windows, minimize/restore and preserved diary state",
+    "Pointer drag, keyboard move, pointer/keyboard resize, maximize and exact geometry restoration",
+    "Taskbar focus, keyboard window cycling, Escape closes only top window and restores focus",
+    "Start keyboard navigation, settings, actual AudioContext activation, mute toggle and effects control",
+    "Repeat visit skips boot; preferences and diary persist; Return Home minimizes without data loss",
+    "Secret command, live notification/dismissal and honest Stage 3 nursery boundary",
+    "Live local clock, replay boot, working boot-screen mute and immediate skip",
+    "390×844 touch: all 12 apps, full-width sheets, minimize/restore, scrolling, Start, multi-window backstack, no horizontal overflow, no custom cursor",
+    "320×844 touch: all 12 apps, full-width sheets, minimize/restore, scrolling, Start, multi-window backstack, no horizontal overflow, no custom cursor",
+    "Reduced motion: immediate ready boot, no star cursor, keyboard-only launch, Tab controls and focus restoration",
+    "Blocked localStorage remains usable without runtime errors",
+    "No browser console errors, runtime exceptions, failed requests or broken visible images"
+  ],
+  "errors": [],
+  "failures": [],
+  "screenshots": [
+    "1440x900",
+    "390x844",
+    "320x844"
+  ],
+  "limitations": [
+    "Chromium emulation, not physical mobile-device or cross-browser validation",
+    "AudioContext activation verified; subjective sound quality requires human listening"
+  ]
+}

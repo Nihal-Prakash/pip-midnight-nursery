@@ -1,5 +1,14 @@
 # Shared component contracts
 
+## DREAM.EXE Stage 1 replacement contract
+The operator explicitly authorized a from-scratch DREAM.EXE rebuild on `feat/stage3-visual`.
+The former scroll-journey contracts below are historical and remain valid only for the
+disconnected legacy components. The new runtime uses `src/os/DreamOS.tsx`, the central
+registry in `src/apps/registry.ts`, and the window reducer in `src/state/windows.ts`.
+See `docs/NAVIGATION_CONTRACT.md` for the authoritative new interfaces. B-owned
+`src/components/interactive/` and `src/hooks/` are not modified or imported by this runtime.
+The original source is preserved; no legacy implementation or screenshots serve as a design template.
+
 ## Tech
 React + TypeScript, Motion for React, CSS variables from one global tokens.css. Prefer zero runtime dependencies beyond approved stack. Types are initially created in src/types.ts by Hermes A. Update this document before a breaking contract change.
 
