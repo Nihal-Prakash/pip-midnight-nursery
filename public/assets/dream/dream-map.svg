@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" fill="none">
+  <defs>
+    <radialGradient id="map-sky-glow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#3B4675" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#25233F" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#18162B"/>
+    </radialGradient>
+    <radialGradient id="hub-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFE5A0" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FFE5A0" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#18162B" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- SKY ENVIRONMENT -->
+  <rect width="1200" height="750" rx="20" fill="url(#map-sky-glow)"/>
+  
+  <!-- BACKGROUND ROOFTOPS & PUFFY CLOUDS -->
+  <g id="map-background-clouds" opacity="0.4" fill="#C9B6E7">
+    <ellipse cx="180" cy="180" rx="120" ry="45"/>
+    <ellipse cx="260" cy="160" rx="80" ry="40"/>
+    <ellipse cx="980" cy="160" rx="130" ry="45"/>
+    <ellipse cx="1060" cy="190" rx="90" ry="35"/>
+    <ellipse cx="600" cy="90" rx="160" ry="40"/>
+  </g>
+
+  <!-- BACKGROUND DISTANT ROOFS -->
+  <g id="map-distant-roofs" fill="#3B4675" opacity="0.5">
+    <polygon points="80,500 160,420 240,500"/>
+    <polygon points="320,530 420,440 520,530"/>
+    <polygon points="680,520 780,430 880,520"/>
+    <polygon points="960,490 1060,410 1160,490"/>
+  </g>
+
+  <!-- DELIVERY ROUTES (Active paths drawn with stroke-dashoffset in CSS/Motion) -->
+  <g id="delivery-routes">
+    <!-- Route 1: Midnight Nursery -> House 1 (Little Ghost Cottage, Left) -->
+    <path id="route-house-1"
+          d="M600 640 C480 620 320 520 220 360"
+          stroke="#FFE5A0" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round" opacity="0.8"/>
+          
+    <!-- Route 2: Midnight Nursery -> House 2 (CloudSlumber Tower, Center-Top) -->
+    <path id="route-house-2"
+          d="M600 640 C550 480 550 320 600 175"
+          stroke="#FFE5A0" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round" opacity="0.8"/>
+          
+    <!-- Route 3: Midnight Nursery -> House 3 (Cozy Monster Burrow, Right) -->
+    <path id="route-house-3"
+          d="M600 640 C720 620 880 520 980 360"
+          stroke="#FFE5A0" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round" opacity="0.8"/>
+  </g>
+
+  <!-- HOUSE 1: Little Ghost Cottage (cx="220" cy="360") -->
+  <g id="house-1-cottage" filter="url(#soft-shadow)">
+    <!-- Cottage Base -->
+    <rect x="160" y="360" width="120" height="90" rx="8" fill="#FFF4E7" stroke="#81638E" stroke-width="2.5"/>
+    <!-- Cottage Roof -->
+    <polygon points="140,360 220,290 300,360" fill="#C9B6E7" stroke="#81638E" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Cute Dormer Window -->
+    <circle cx="220" cy="330" r="14" fill="#FFE5A0" stroke="#81638E" stroke-width="2"/>
+    <path d="M220 316 L220 344 M206 330 L234 330" stroke="#81638E" stroke-width="1.5"/>
+    <!-- Cottage Chimney -->
+    <rect x="250" y="295" width="20" height="30" fill="#F5C9DC" stroke="#81638E" stroke-width="2"/>
+    <circle cx="260" cy="285" r="5" fill="#FFF4E7" opacity="0.6"/>
+    <!-- Front Door & Lit Window -->
+    <rect x="200" y="405" width="40" height="45" rx="4" fill="#81638E"/>
+    <rect x="175" y="385" width="20" height="20" rx="3" fill="#FFE5A0" stroke="#81638E" stroke-width="1.5"/>
+    <!-- Target Anchor Pin -->
+    <circle cx="220" cy="360" r="18" fill="#FFE5A0" fill-opacity="0.25"/>
+    <circle cx="220" cy="360" r="6" fill="#F5C9DC" stroke="#81638E" stroke-width="2"/>
+  </g>
+
+  <!-- HOUSE 2: CloudSlumber Tower / Observatory (cx="600" cy="175") -->
+  <g id="house-2-observatory" filter="url(#soft-shadow)">
+    <!-- Tower Body -->
+    <rect x="550" y="175" width="100" height="150" rx="10" fill="#FFF4E7" stroke="#81638E" stroke-width="2.5"/>
+    <!-- Arched Observatory Dome -->
+    <path d="M540 175 C540 115 660 115 660 175 Z" fill="#F5C9DC" stroke="#81638E" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Golden Telescope Hatch -->
+    <ellipse cx="600" cy="155" rx="18" ry="12" fill="#FFE5A0" stroke="#81638E" stroke-width="2"/>
+    <!-- Slender Windows -->
+    <rect x="575" y="200" width="18" height="32" rx="6" fill="#FFE5A0" stroke="#81638E" stroke-width="1.5"/>
+    <rect x="607" y="200" width="18" height="32" rx="6" fill="#FFE5A0" stroke="#81638E" stroke-width="1.5"/>
+    <rect x="585" y="255" width="30" height="40" rx="6" fill="#C9B6E7" stroke="#81638E" stroke-width="2"/>
+    <!-- Target Anchor Pin -->
+    <circle cx="600" cy="175" r="20" fill="#FFE5A0" fill-opacity="0.3"/>
+    <circle cx="600" cy="175" r="7" fill="#FFE5A0" stroke="#81638E" stroke-width="2"/>
+  </g>
+
+  <!-- HOUSE 3: Cozy Monster Burrow / Moss Villa (cx="980" cy="360") -->
+  <g id="house-3-burrow" filter="url(#soft-shadow)">
+    <!-- Burrow Dome Structure -->
+    <path d="M910 440 C910 350 1050 350 1050 440 Z" fill="#FFF4E7" stroke="#81638E" stroke-width="2.5"/>
+    <!-- Rounded Patchwork Roof -->
+    <path d="M895 380 C895 310 1065 310 1065 380 Z" fill="#F5C9DC" stroke="#81638E" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M940 315 C965 330 1000 325 1025 315" stroke="#81638E" stroke-width="2" fill="none"/>
+    <!-- Cute Round Porthole Windows -->
+    <circle cx="950" cy="365" r="14" fill="#FFE5A0" stroke="#81638E" stroke-width="2"/>
+    <circle cx="1010" cy="365" r="14" fill="#FFE5A0" stroke="#81638E" stroke-width="2"/>
+    <!-- Burrow Arch Doorway -->
+    <path d="M960 440 C960 410 1000 410 1000 440 Z" fill="#81638E"/>
+    <!-- Target Anchor Pin -->
+    <circle cx="980" cy="360" r="18" fill="#FFE5A0" fill-opacity="0.25"/>
+    <circle cx="980" cy="360" r="6" fill="#C9B6E7" stroke="#81638E" stroke-width="2"/>
+  </g>
+
+  <!-- ORIGIN HUB: Midnight Nursery Main Base (cx="600" cy="640") -->
+  <g id="hub-midnight-nursery" filter="url(#soft-shadow)">
+    <!-- Nursery Glow Aura -->
+    <circle cx="600" cy="640" r="70" fill="url(#hub-glow)"/>
+    <!-- Nursery Grand Gabled Manor Roof -->
+    <polygon points="460,670 600,560 740,670" fill="#25233F" stroke="#81638E" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Center Dormer / Pip's Workshop Attic -->
+    <rect x="550" y="590" width="100" height="80" rx="8" fill="#FFF4E7" stroke="#81638E" stroke-width="2.5"/>
+    <!-- Glowing Workshop Attic Window with Starlight Grid -->
+    <rect x="565" y="605" width="70" height="50" rx="6" fill="#FFE5A0" stroke="#81638E" stroke-width="2"/>
+    <path d="M600 605 L600 655 M565 630 L635 630" stroke="#81638E" stroke-width="1.8"/>
+    <!-- Brass Chimney with Starlight Spool -->
+    <rect x="670" y="550" width="24" height="40" rx="4" fill="#FFE5A0" stroke="#81638E" stroke-width="2"/>
+    <!-- Delivery Launch Anchor Pin (cx="600" cy="640") -->
+    <circle cx="600" cy="640" r="10" fill="#FFE5A0" stroke="#81638E" stroke-width="2.5"/>
+    <circle cx="600" cy="640" r="3" fill="#81638E"/>
+  </g>
+
+  <!-- FLOATING DECORATIVE STARS IN SKY -->
+  <g id="sky-sparkles">
+    <path d="M380 200 C380 206 374 210 368 210 C374 210 380 214 380 220 C380 214 386 210 392 210 C386 210 380 206 380 200 Z" fill="#FFE5A0"/>
+    <path d="M780 180 C780 186 774 190 768 190 C774 190 780 194 780 200 C780 194 786 190 792 190 C786 190 780 186 780 180 Z" fill="#FFE5A0"/>
+    <circle cx="480" cy="270" r="2.5" fill="#FFE5A0"/>
+    <circle cx="730" cy="260" r="2.5" fill="#FFE5A0"/>
+  </g>
+</svg>

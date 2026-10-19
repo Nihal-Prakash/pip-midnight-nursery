@@ -1,0 +1,17 @@
+.dx-atlas { display: grid; gap: 16px; min-width: 0; max-width: 100%; padding: clamp(16px, 3vw, 30px); color: var(--midnight, #25233f); background: var(--cream, #fff4e7); border: 1px solid var(--plum, #81638e); border-radius: 18px; }
+.dx-atlas header { display: grid; gap: 8px; }
+.dx-atlas h2 { font: 28px/1.15 Georgia, serif; }
+.dx-atlas header > p:last-child, .dx-atlas-description { font: 15px/1.6 Georgia, serif; }
+.dx-atlas-models, .dx-atlas-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+.dx-atlas button { min-height: 44px; justify-content: center; }
+.dx-atlas button:disabled { opacity: .6; transform: none; }
+.dx-atlas-models button[aria-pressed='true'] { background: var(--lavender, #c9b6e7); box-shadow: inset 0 0 0 2px var(--plum, #81638e); }
+.dx-atlas-display { height: clamp(260px, 43vw, 410px); width: 100%; min-width: 0; overflow: hidden; position: relative; border: 1px solid #81638e; border-radius: 14px; background: radial-gradient(ellipse at 50% 45%, #554568, #25233f 74%); box-shadow: inset 0 0 45px #16142655; }
+.dx-atlas-display canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+.dx-atlas-display canvas:focus-visible { outline-offset: -5px; }
+.dx-atlas .dx-atlas-status { color: var(--plum, #81638e); font: bold 12px/1.6 'Courier New', monospace; }
+.dx-atlas-hint, .dx-atlas-missing p { font-size: 12px; line-height: 1.65; }
+.dx-atlas-missing { border: 1px dashed var(--plum, #81638e); background: #c9b6e725; padding: 14px; border-radius: 9px; }
+.dx-atlas-missing strong { display: block; font-size: 13px; margin-bottom: 5px; }
+.dx-atlas small { font-size: 10px; line-height: 1.5; }
+@media (max-width: 480px) { .dx-atlas { gap: 13px; padding: 14px; border-radius: 12px; } .dx-atlas h2 { font-size: 24px; } .dx-atlas-controls button { flex: 1 1 42%; padding: 10px; } .dx-atlas-models button { flex: 1 1 100%; } }

@@ -1,5 +1,11 @@
 # Shared component contracts
 
+## Stage 3 approved integration
+
+The operator authorizes Hermes A/B cross-ownership integration on `feat/dream-stage3`, based on approved Stage 2 commit d87205a. Preserve DreamOS as the coordinator and the typed station/return contract. Three.js is explicitly approved only for the additional, lazy-loaded Dream Atlas.
+
+`Nursery` additionally receives the existing central `progress`, `updateProgress`, `reduced`, `ambient`, `playMelody(notes)` and `stopSounds()` controller functions. It owns temporary portal, scene, dialogue and finale presentation, not another save or audio context. Games call `onComplete()` only on an earned completion; the parent dispatches the existing idempotent repair action. Partial attempts may restart on close; earned repairs never do. Atlas receives reduced motion and remains separate from repairs.
+
 ## DREAM.EXE Stage 2 extension
 Operator assigned Hermes A to `feat/stage2-apps`. Stage 1 chrome/boot/desktop/cursor
 remain authoritative. AppProps now receives a centralized `navigation` API,
