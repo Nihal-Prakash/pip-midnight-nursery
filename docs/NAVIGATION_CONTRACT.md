@@ -1,5 +1,17 @@
 # DREAM.EXE — navigation and state contract
 
+## Final Stage 3 / release extension
+
+The existing typed destinations render real gameplay in `src/components/interactive/DreamGames.tsx`.
+Repairs use the existing idempotent reducer: wind the music box and finish its four-phrase melody
+(silent play is allowed), discover all three stars, or deliver matching dreams to all three homes.
+Stop/exit cancels pending playback and completion; navigation keeps the desktop
+mounted and restores the originating app. Three repairs unlock the nursery
+goodnight scene and sweetdreams.exe. The existing immersive nursery and its approved,
+lazy-loaded Three.js Dream Atlas remain authoritative.
+`npm run test:stage3:browser` smoke-checks desktop nursery entry and interactive Pip;
+evidence is written to `docs/evidence/dream-stage3/`. It is not a full gameplay or mobile check.
+
 ## Stage 2 runtime contract (supersedes Stage 1 reserved destinations below)
 
 DreamOS remains the single coordinator; the twelve registry IDs and window

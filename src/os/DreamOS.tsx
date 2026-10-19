@@ -131,6 +131,8 @@ export default function DreamOS() {
     setNursery(null)
     if (nursery?.returnApp) dispatch({ type: 'focus', id: nursery.returnApp })
     requestAnimationFrame(() => {
+      // A finale may launch another app during exit; don't steal its focus back.
+      if (nursery?.returnApp && document.querySelector('.dx-window[data-focused="true"]')?.id !== `window-${nursery.returnApp}`) return
       if (returnControl.current?.isConnected) returnControl.current.focus({ preventScroll: true })
       else document.getElementById('launch-dreams')?.focus({ preventScroll: true })
     })
